@@ -1,0 +1,19 @@
+{
+  "PostIntro": {
+    "id": "int",
+    "title": "string",
+    "slug": "string",
+    "createdAt": "date",
+    "coverImage": "string",
+    "tags": "Tag[]",
+    "author": {
+      "id": "int",
+      "name": "string",
+      "image": "string"
+    }
+  },
+  "Tag": {
+    "id": "int",
+    "name": "string"
+  }
+}
