@@ -20,8 +20,8 @@ export default function HomePage() {
 
       {/* Body */}
       <Page.Body>
-        <Grid.Container gap={2} justify="center">
-          <Grid lg={4}>
+        <Grid.Container gap={1} justify="center" style={{ paddingLeft: "1.5%", paddingRight: "1.5%" }}>
+          <Grid xs={0} sm={7} lg={5.5} xl={4.5}>
             {/* Left SideBar */}
             <Col>
               <Row style={{ flexWrap: 'wrap' }}>
@@ -46,7 +46,7 @@ export default function HomePage() {
               </Row>
             </Col>
           </Grid>
-          <Grid lg={11}>
+          <Grid xs={24} sm={17} lg={13} xl={11.5}>
             {/* Middle Content Feed */}
             <Col>
               {posts.map(post => (
@@ -55,7 +55,7 @@ export default function HomePage() {
             </Col>
 
           </Grid>
-          <Grid lg={5}>
+          <Grid xs={0} lg={5.5} xl={5.5}>
             {/* Right SideBar */}
             <Col>
               <Card shadow style={{width: '100%', height: '500px'}}/>

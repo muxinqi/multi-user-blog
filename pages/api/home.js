@@ -6,6 +6,9 @@ export default async function handler(req, res) {
       where: {
         published: true,
       },
+      orderBy: {
+        createdAt: 'desc'
+      },
       select: {
         id: true,
         title: true,

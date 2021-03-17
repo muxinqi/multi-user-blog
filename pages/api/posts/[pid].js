@@ -24,8 +24,13 @@ export default async function handler(req, res) {
 // GET /api/posts/:pid
 async function handleGET(postId, res) {
   const post = await prisma.post.findUnique({
-    where: {id: Number(postId)},
-    include: {author: true},
+    where: {
+      id: Number(postId)
+    },
+    include: {
+      tags: true,
+      author: true,
+    },
   })
   res.status(200).json(post)
 }

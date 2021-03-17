@@ -1,16 +1,6 @@
 import {GeistProvider, CssBaseline, Themes} from "@geist-ui/react";
 import { Provider } from "next-auth/client"
 
-/** default breakpoints
- * const breakpoints = {
- *   xs: { min: '0', max: '650px' },
- *   sm: { min: '650px', max: '900px' },
- *   md: { min: '900px', max: '1280px' },
- *   lg: { min: '1280px', max: '1920px' },
- *   xl: { min: '1920px', max: '10000px' },
- * }
- */
-
 const breakpoints = {
   xs: { min: '0', max: '640px' },
   sm: { min: '640px', max: '768px' },
