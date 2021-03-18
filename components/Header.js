@@ -82,11 +82,9 @@ const Header = () => {
           {!session && <>
             {/* Login Button */}
             <Grid xs={0} sm={3.5} md={3} lg={3} xl={2}>
-              <Link href={"/enter"}>
                 <Button size={isXS ? "small":"medium"} auto onClick={() => signIn()}>
                   <Text b> Log in </Text>
                 </Button>
-              </Link>
             </Grid>
 
             {/* Search Button */}
