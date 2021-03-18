@@ -43,5 +43,6 @@ async function handlePOST(req, res) {
         post: { connect: { id: req.query.pid } }
       }
     })
+    res.status(201).json(result)
   }
 }

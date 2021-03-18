@@ -5,6 +5,7 @@ import {
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
 import Footer from "components/Footer";
+import Discussion from "components/Discussion";
 
 
 export async function getServerSideProps(context) {
@@ -104,38 +105,7 @@ const PostPage = ({ data }) => {
                 <Spacer y={1.5} />
                 <Divider />
                 <Spacer y={1.5} />
-                {/* Comments Input*/}
-                <Row justify={"space-between"}>
-                  <Text b size="1.8rem">Discussion (3)</Text>
-                </Row>
-                <Spacer y={1} />
-                <Row>
-                  <Avatar text="Joe" size="medium"/>
-                  <Spacer x={0.5} />
-                  <Textarea width="90%" placeholder="Add to the discussion" />
-                </Row>
-                <Spacer y={1} />
-
-                <Row>
-                  <Avatar src={"https://i.loli.net/2021/03/07/uAfLay5rhPlskK9.png"} size="medium" />
-                  <Spacer x={0.5} />
-                  <Card style={{ width: "90%" }} >
-                    <Row>
-                      <Link href={"/muxinqi"}><Text small b type="secondary">jamesfranklin-max</Text></Link>
-                      <Spacer x={0.5} />
-                      <Link href={"/muxinqi"}><Text small type="secondary">{new Date().toDateString()}</Text></Link>
-                      <Button auto size="small" icon={<Icon.MoreHorizontal />} style={{ position: "absolute", right: "0px" }} />
-                    </Row>
-                    <Text p>
-                      Yesterday was stuck with back tracking question, this really helped a lot.
-                      Since having a step by step approach helps in breaking down the problem statement in smaller unit, solving becomes easier.
-                    </Text>
-                    <Text p/>
-                    <Text p>
-                      Thanks, This will definitely help the community.
-                    </Text>
-                  </Card>
-                </Row>
+                <Discussion />
               </Card>
             </Col>
           </Grid>

@@ -8,7 +8,7 @@ function NewUserPage() {
   const [, setToast] = useToasts()
   async function handleClick() {
     // username is empty
-    if (!value || value.length == 0) {
+    if (!value || value.length === 0) {
       setToast({
         text: 'username can not be empty!',
         type: 'warning'

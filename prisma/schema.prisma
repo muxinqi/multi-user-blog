@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -76,6 +76,8 @@ model Post {
   published       Boolean  @default(false)
   author          User     @relation(fields: [authorId], references: [id])
   authorId        Int      @map(name: "author_id")
+  like            Int      @default(0)
+  view            Int      @default(0)
 
   tags     Tag[]
   comments Comment[]
