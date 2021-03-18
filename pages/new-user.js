@@ -1,14 +1,30 @@
-import useSession from 'next-auth/client';
-import { Page, Input, Grid, Button, Col, Row, Spacer } from '@geist-ui/react';
+import { Page, Input, Grid, Button, Col, Row, Spacer, useToasts } from '@geist-ui/react';
 import { useState } from 'react';
-import { checkUsername } from 'lib/checkUsername';
+import { useRouter } from 'next/router';
 
-const submit = () => {
-  
-}
-
-const NewUserPage = () => {
+function NewUserPage() {
+  const router = useRouter()
   const [value, setValue] = useState()
+  const [, setToast] = useToasts()
+  async function handleClick() {
+    // username is empty
+    if (!value || value.length == 0) {
+      setToast({
+        text: 'username can not be empty!',
+        type: 'warning'
+      })
+      return
+    }
+    const res = await fetch(`/api/users/${value}`, {
+      method: 'PATCH'
+    })
+    const data = await res.json()
+    console.log(JSON.stringify(data))
+    if (data.username === value) {
+      router.push('/dashboard')
+    }
+  }
+
   const handler = async e => {
     setValue(e.target.value)
     console.log(e.target.value)
@@ -31,7 +47,7 @@ const NewUserPage = () => {
             </Row>
             <Spacer y={0.618}/>
             <Row justify="center">
-              <Button type="success-light">Confirm</Button>
+              <Button type="success-light" onClick={handleClick}>Confirm</Button>
             </Row>
           </Col>
         </Grid>

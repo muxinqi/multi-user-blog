@@ -40,10 +40,11 @@ const Header = () => {
       </Popover.Item>
       <Popover.Item line />
       <Popover.Item>
-        <a href={`/api/auth/signout`}
-           onClick={(e) => {
+        <a onClick={(e) => {
              e.preventDefault()
-             signOut()
+             signOut({
+               callbackUrl: 'http://localhost:3000/'
+             })
            }}
         > Logout </a>
       </Popover.Item>

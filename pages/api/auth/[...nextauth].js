@@ -89,7 +89,11 @@ export default NextAuth({
     //     return "/dashboard"
     //   }
     // },
-    // async redirect(url, baseUrl) { return baseUrl },
+    async redirect(url, baseUrl) {
+      return url.startsWith(baseUrl)
+        ? url
+        : baseUrl
+    },
     // async session(session, user) { return session },
     // async jwt(token, user, account, profile, isNewUser) { return token }
   },

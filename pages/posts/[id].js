@@ -1,20 +1,7 @@
 import Header from "components/Header";
-import {
-  Avatar,
-  Button,
-  Card,
-  Col, Description,
-  Divider,
-  Grid,
-  Image,
-  Link,
-  Page,
-  Popover,
-  Row,
-  Spacer,
-  Tag,
-  Text, Textarea,
-  User
+import { 
+  Avatar, Button, Card, Col, Description, Divider, Grid, Image, Link, Page, 
+  Popover, Row, Spacer, Tag, Text, Textarea, User
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
 import Footer from "components/Footer";
@@ -69,8 +56,8 @@ const PostPage = ({ data }) => {
     <>
       <Header />
       <Page.Body>
-        <Grid.Container gap={2} justify={"center"}>
-          <Grid lg={1.5}>
+        <Grid.Container gap={1.5} justify={"center"}>
+          <Grid xs={0} md={2} lg={1.5}>
             {/* Left SideBar */}
             <Col>
               <Spacer y={2} />
@@ -89,7 +76,7 @@ const PostPage = ({ data }) => {
               </Row>
             </Col>
           </Grid>
-          <Grid lg={14}>
+          <Grid xs={24} md={21.5} lg={14}>
             {/* Middle Content Feed */}
             <Col>
               <Card shadow style={{width: '100%'}} >
@@ -151,16 +138,16 @@ const PostPage = ({ data }) => {
                 </Row>
               </Card>
             </Col>
-
           </Grid>
-          <Grid lg={6}>
+          <Grid xs={0}  md={2} lg={0}></Grid>
+          <Grid xs={24} md={21.5} lg={6}>
             {/* Right SideBar */}
             <Col>
-              <Card shadow style={{width: '90%'}} >
+              <Card shadow style={{width: '100%'}} >
                 <Row align={"middle"}>
-                  <Avatar src={"https://i.loli.net/2021/03/07/O154GQiXntzVA8k.png"} size="medium"/>
+                  <Avatar src={author.image} size="medium"/>
                   <Spacer x={0.5} />
-                  <Text b size={20}> Rahul Arora </Text>
+                  <Text b size={20}> {author.name} </Text>
                 </Row>
                 <Text p> Founder: intervue.io Loves Innovation Javascript Enthusiast </Text>
                 <Spacer y={0.618} />

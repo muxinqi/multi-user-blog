@@ -1,4 +1,5 @@
 import prisma from "lib/prisma";
+import { getSession } from "next-auth/client";
 
 export default async function handler(req, res) {
 
@@ -6,8 +7,11 @@ export default async function handler(req, res) {
     case 'GET':
       await handleGET(req, res)
       break
+    case 'PATCH':
+      await handlePATCH(req, res)
+      break
     default:
-      res.setHeader('Allow', ['GET', 'DELETE'])
+      res.setHeader('Allow', ['GET', 'PATCH'])
       res.status(405).end(`Method ${method} Not Allowed`)
   }
 }
@@ -16,7 +20,7 @@ export default async function handler(req, res) {
 async function handleGET(req, res) {
   const username = req.query.username
   const checkAvailable = Boolean(req.query.checkAvailable)
-  
+
   if (checkAvailable) {
     const userCount = await prisma.user.count({
       where: { username: username }
@@ -27,5 +31,29 @@ async function handleGET(req, res) {
       where: { username: username }
     })
     res.status(200).json(user)
+  }
+}
+// PATCH /api/users/:username
+// set username
+async function handlePATCH(req, res) {
+  const username = req.query.username
+  const session = await getSession({ req })
+  // if user not logged in
+  if (!session) {
+    res.status(401).json('Unauthorized')
+  }
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { username: true }
+  })
+  // if user don't have username
+  if (!user.username) {
+    const updateUser = await prisma.user.update({
+      where: { email: session.user.email },
+      data: { username: username }
+    })
+    res.status(200).json(updateUser)
+  } else {
+    res.status(403)
   }
 }
