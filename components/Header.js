@@ -43,7 +43,7 @@ const Header = () => {
         <a onClick={(e) => {
              e.preventDefault()
              signOut({
-               callbackUrl: 'http://localhost:3000/'
+               callbackUrl: process.env.BASE_URL
              })
            }}
         > Logout </a>

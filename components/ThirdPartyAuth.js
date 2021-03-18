@@ -20,7 +20,7 @@ const GoSignInHint = ({ isLoggingIn }) => {
 
 const ThirdPartyAuth = ({ isLoggingIn }) => {
   const API_BASE_URL = 'http://lcoalhost:8080';
-  const OAUTH2_REDIRECT_URI = 'http://localhost:3000/oauth2/redirect';
+  const OAUTH2_REDIRECT_URI = `${process.env.BASE_URL}/oauth2/redirect`;
   const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect_uri=' + OAUTH2_REDIRECT_URI;
 
   const loggingInBool = isLoggingIn === true

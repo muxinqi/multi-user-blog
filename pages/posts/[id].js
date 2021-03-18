@@ -8,7 +8,7 @@ import Footer from "components/Footer";
 
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`http://localhost:3000/api/posts/${context.params.id}`)
+  const res = await fetch(`${process.env.BASE_URL}/api/posts/${context.params.id}`)
   const data = await res.json()
 
   if (!data) {
