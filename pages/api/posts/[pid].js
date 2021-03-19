@@ -32,7 +32,11 @@ async function handleGET(postId, res) {
       author: true,
     },
   })
-  res.status(200).json(post)
+  if (!post) {
+    res.status(404)
+  } else {
+    res.status(200).json(post)
+  }
 }
 
 // DELETE /api/posts/:pid
