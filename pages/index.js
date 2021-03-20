@@ -1,18 +1,28 @@
-import {Button, Card, Col, Grid, Link, Loading, Page, Row, Spacer, Text} from "@geist-ui/react";
-import * as Icon from "@geist-ui/react-icons"
+import { Button, Card, Col, Grid, Link, Loading, Page, Row, Spacer, Text } from "@geist-ui/react";
+import * as Icon from "@geist-ui/react-icons";
 import PostCard from "components/PostCard";
 import Header from "components/Header";
 import Footer from "components/Footer";
-import useSWR from "swr";
-import {useGetPosts} from "lib/useGetPosts";
+import { useHomePosts } from "lib/useHomePosts";
+
+function PostFeed() {
+  const { posts, isLoading, isError } = useHomePosts();
+  if (isError) return <h1>Something went wrong!</h1>;
+  if (isLoading) return <Loading>Loading</Loading>;
+  return (
+    <>
+      {posts.map(post => (
+        <PostCard post={post} key={post.id} />
+      ))}
+    </>
+  );
+}
 
 export default function HomePage() {
 
-  const text = "M Blog is a community of 34567,678 amazing developers"
-  const smallText = "We're a place where coders share, stay up-to-date and grow their careers."
-  const { posts, error } = useGetPosts("/api/home")
-  if (error) return <h1>Something went wrong!</h1>
-  if (!posts) return <Loading>加载中</Loading>
+  const text = "M Blog is a community of 34567,678 amazing developers";
+  const smallText = "We're a place where coders share, stay up-to-date and grow their careers.";
+
   return (
     <>
       {/* Header */}
@@ -49,9 +59,7 @@ export default function HomePage() {
           <Grid xs={24} sm={17} lg={13} xl={11.5}>
             {/* Middle Content Feed */}
             <Col>
-              {posts.map(post => (
-                <PostCard post={post} key={post.id}/>
-              ))}
+              <PostFeed />
             </Col>
 
           </Grid>

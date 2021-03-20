@@ -1,41 +1,63 @@
 import Header from "components/Header";
-import { 
-  Avatar, Button, Card, Col, Description, Divider, Grid, Image, Link, Page, 
-  Popover, Row, Spacer, Tag, Text, Textarea, User
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Description,
+  Divider,
+  Grid,
+  Image,
+  Link,
+  Loading,
+  Page,
+  Popover,
+  Row,
+  Spacer,
+  Tag,
+  Text,
+  Textarea,
+  useInput,
+  User,
+  useToasts
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
 import Footer from "components/Footer";
-import Discussion from "components/Discussion";
+import { useSession } from "next-auth/client";
+import React, { useState } from "react";
+import { useCommentsByPostId } from "../../lib/useCommentsByPostId";
+import moment from "moment";
 
 
-export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.BASE_URL}/api/posts/${context.params.id}`)
-  const data = await res.json()
+export async function getServerSideProps({ params }) {
+  const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
+  const data = await res.json();
 
   if (!data) {
     return {
-      notFound: true,
-    }
+      notFound: true
+    };
   }
 
   return {
     props: {
       data,
+      postId: params.id
     }
   }
 }
 
-const PostPage = ({ data }) => {
+const PostPage = ({ data, postId }) => {
   const {
     title,
     coverImage,
     createdAt,
     renderedContent,
     tags,
-    author,
-  } = data
-  const tagTypeArray = ['default', 'secondary', 'success', 'warning', 'error', 'dark']
-  const readTime = '45 min read'
+    author
+  } = data;
+  const tagTypeArray = ["default", "secondary", "success", "warning", "error", "dark"];
+  const readTime = "45 min read";
   const content = () => (
     <>
       <Popover.Item title>
@@ -101,31 +123,32 @@ const PostPage = ({ data }) => {
 
                 {/* Post Content */}
                 <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
-                
+
                 <Spacer y={1.5} />
                 <Divider />
                 <Spacer y={1.5} />
-                <Discussion />
+                {/* Discussion Area */}
+                <Discussion postId={postId} />
               </Card>
             </Col>
           </Grid>
-          <Grid xs={0}  md={2} lg={0}></Grid>
+          <Grid xs={0} md={2} lg={0} />
           <Grid xs={24} md={21.5} lg={6}>
             {/* Right SideBar */}
             <Col>
-              <Card shadow style={{width: '100%'}} >
+              <Card shadow style={{ width: "100%" }}>
                 <Row align={"middle"}>
-                  <Avatar src={author.image} size="medium"/>
+                  <Avatar src={author.image} size="medium" />
                   <Spacer x={0.5} />
                   <Text b size={20}> {author.name} </Text>
                 </Row>
                 <Text p> Founder: intervue.io Loves Innovation Javascript Enthusiast </Text>
                 <Spacer y={0.618} />
-                <Button auto type="success-light" style={{ width: '100%' }}> <Text b> Follow </Text> </Button>
+                <Button auto type="success-light" style={{ width: "100%" }}> <Text b> Follow </Text> </Button>
                 <Spacer y={1} />
                 <Description title="LOCATION" content={"New Delhi"} />
                 <Spacer y={0.618} />
-                <Description title="JOINED" content={ new Date(author.createdAt).toDateString() } />
+                <Description title="JOINED" content={new Date(author.createdAt).toDateString()} />
               </Card>
             </Col>
           </Grid>
@@ -135,4 +158,116 @@ const PostPage = ({ data }) => {
     </>
   )
 }
-export default PostPage
+
+const Discussion = ({ postId }) => {
+  const [session] = useSession();
+  const [btnDisable, setBtnDisable] = useState(true);
+  const [showSubmitBtn, setShowSubmitBtn] = useState(false);
+  const { state, setState, reset, bindings } = useInput("");
+  const [, setToast] = useToasts();
+
+  const toast = (type, text) => {
+    setToast({
+      type: type,
+      text: text
+    });
+  };
+
+  const { comments, isLoading, isError } = useCommentsByPostId(postId);
+
+  const handleSubmit = async () => {
+    const data = {
+      rawContent: state
+    };
+    const url = `/api/posts/${postId}/comments`;
+    console.log(url);
+    await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(res => {
+      if (res.ok && res.status === 201) {
+        reset();
+        toast("success", "Comment submitted successfully");
+      } else {
+        toast("warning", "Failed to send comment.");
+        console.log("failed to send comment: ", res.status);
+      }
+    }).catch(error => {
+      console.log("error: ", error.message);
+    });
+
+  };
+
+  const SubmitBtn = () => (
+    <Row style={{ marginTop: "15px" }}>
+      <Button auto type="success" onClick={handleSubmit} disabled={btnDisable}> Submit </Button>
+      <Spacer y={0.5} />
+      <Button auto type="secondary" ghost disabled={btnDisable}> Preview </Button>
+    </Row>
+  );
+
+  const handleInputChange = e => {
+    setState(e.target.value);
+    if (e.target.value.length > 0) {
+      // display submit button
+      setBtnDisable(false);
+    } else {
+      setBtnDisable(true);
+    }
+  };
+
+  return (
+    <>
+      <Grid.Container>
+        <Grid xs={24} style={{ marginBottom: "15px" }}>
+          <Text b size="1.8rem">Discussion (3)</Text>
+        </Grid>
+        <Grid xs={3}>
+          {!session && <Avatar text="You" size="medium" />}
+          {session && <Avatar src={session.user.image} size="medium" />}
+        </Grid>
+        <Grid xs={21}>
+          <Col>
+            <Row>
+              <Textarea width="100%"  {...bindings} onChange={handleInputChange} placeholder="Add to the discussion"
+                        onFocus={() => setShowSubmitBtn(true)} />
+            </Row>
+            {showSubmitBtn ? <SubmitBtn /> : null}
+          </Col>
+        </Grid>
+        {isLoading && <Loading />}
+        {isError && <>Something went wrong.</>}
+        {comments && <>
+          {comments.map(comment => (
+            <>
+              <Grid xs={3} style={{ marginTop: "25px" }}>
+                <Avatar src={comment.author.image} size="medium" />
+              </Grid>
+              <Grid xs={21} style={{ marginTop: "25px" }}>
+                <Card style={{ width: "100%" }}>
+                  <Row>
+                    <Link href={"/muxinqi"}><Text small b type="secondary">{comment.author.name}</Text></Link>
+                    <Spacer x={0.5} />
+                    <Link href={"/muxinqi"}><Text small type="secondary"
+                                                  title={new Date(comment.createdAt).toString()}>{moment(comment.createdAt).fromNow()}</Text></Link>
+                    <Button auto size="small" icon={<Icon.MoreHorizontal />}
+                            style={{ position: "absolute", right: "0px" }} />
+                  </Row>
+
+                  {/* Comment Content */}
+                  <div dangerouslySetInnerHTML={{ __html: comment.renderedContent }} />
+                </Card>
+              </Grid>
+            </>
+          ))}
+        </>}
+
+      </Grid.Container>
+    </>
+  );
+};
+
+export default PostPage;
