@@ -1,5 +1,7 @@
 import prisma from "lib/prisma";
 import {getSession} from "next-auth/client"
+import remark from "remark";
+import html from "remark-html";
 
 export default async function handler(req, res) {
   const postId = req.query.pid
@@ -74,7 +76,25 @@ async function handlePUT(session, postId, req, res) {
     res.status(403).end('Forbidden')
   }
   // update post
-  const {title, slug, rawContent, renderedContent, published} = req.body
+  const {id, title, slug, rawContent, tags, published} = req.body
+  const renderedContent = await remark()
+    .use(html)
+    .process(rawContent);
+  const result = await prisma.post.update({
+    where: { id: Number(postId) },
+    data: {
+      title: title,
+      slug: slug,
+      rawContent: rawContent,
+      renderedContent: renderedContent.toString(),
+      published: published,
+    }
+  })
+  if (!result) {
+    res.status(500)
+  } else {
+    res.status(200).json(result)
+  }
 
 
 }
