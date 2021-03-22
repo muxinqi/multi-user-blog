@@ -1,5 +1,6 @@
-import {Button, Card, Image, Link, Row, Tag, Text, useMediaQuery, User} from "@geist-ui/react";
+import { Button, Card, Link, Row, Tag, Text, useMediaQuery, User } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
+import Image from "next/image";
 
 const PostCard = ({ post }) => {
   const isXS = useMediaQuery('xs')
@@ -16,11 +17,17 @@ const PostCard = ({ post }) => {
 
   const commentsCount = 0
   return (
-    <Row style={{  marginBottom: '15px' }}>
-      <Card shadow style={{width: '100%'}}>
+    <Row style={{ marginBottom: "15px" }}>
+      <Card shadow style={{ width: "100%" }}>
         {!coverImage && <></>}
         {coverImage &&
-          <Image width="100%" src={coverImage}/>
+        <Image
+          src={coverImage}
+          alt="Post Cover Image"
+          layout="responsive"
+          width={210}
+          height={90}
+        />
         }
         <Link href={`/posts/${id}`}><Text h2>{title}</Text></Link>
         {/*<Text type="secondary">{description}</Text>*/}
