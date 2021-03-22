@@ -180,7 +180,6 @@ const Discussion = ({ postId }) => {
       rawContent: state
     };
     const url = `/api/posts/${postId}/comments`;
-    console.log(url);
     await fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
