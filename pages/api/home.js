@@ -16,11 +16,13 @@ export default async function handler(req, res) {
         createdAt: true,
         coverImage: true,
         tags: true,
+        like: true,
+        view: true,
         author: {
           select: {
             id: true,
             name: true,
-            image: true,
+            image: true
           }
         }
       }
