@@ -46,13 +46,16 @@ const DashboardPage = () => {
   console.log("posts: ", JSON.stringify(posts.posts));
 
   const editOperation = (actions, rowData) => {
-    return <Button auto size="mini" type="success" ghost>Edit</Button>;
+    return <Link href={`/posts/${rowData.rowValue.id}/edit`}>
+      <Button auto size="mini" type="success" ghost>Edit</Button>
+    </Link>;
   };
 
   const moreOperation = (actions, rowData) => {
     return <Button auto size="mini" icon={<Icon.MoreHorizontal />} />;
   };
 
+  // Dashboard posts table data
   let data = [];
   if (posts.posts) {
     const postCountData = (like, view) => {
