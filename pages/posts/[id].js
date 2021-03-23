@@ -38,7 +38,10 @@ export async function getServerSideProps({ params }) {
       notFound: true
     };
   }
-
+  // post views increment
+  fetch(`${process.env.BASE_URL}/api/posts/${params.id}/views`, {
+    method: "PATCH"
+  })
   return {
     props: {
       data,
@@ -58,6 +61,7 @@ const PostPage = ({ data, postId }) => {
   } = data;
   const tagTypeArray = ["default", "secondary", "success", "warning", "error", "dark"];
   const readTime = "45 min read";
+  const [likePost, setLikePost] = React.useState(false)
   const content = () => (
     <>
       <Popover.Item title>
@@ -75,6 +79,16 @@ const PostPage = ({ data, postId }) => {
       </Popover.Item>
     </>
   )
+  const handleLike = () => {
+    fetch(`http://localhost:3000/api/posts/${postId}/likes`, {
+      method: "PATCH"
+    }).then(res => {
+      if (res.ok) {
+        setLikePost(true)
+      }
+    })
+  }
+
   return (
     <>
       <Header />
@@ -85,7 +99,7 @@ const PostPage = ({ data, postId }) => {
             <Col>
               <Spacer y={2} />
               <Row style={{ flexWrap: 'wrap' }}>
-                <Button auto icon={<Icon.ThumbsUp />} />
+                <Button auto icon={likePost ? <Icon.HeartFill color="red" /> : <Icon.Heart />} onClick={handleLike} />
               </Row>
               <Spacer y={0.618} />
               <Row style={{ flexWrap: 'wrap' }}>
@@ -128,7 +142,7 @@ const PostPage = ({ data, postId }) => {
                 <Divider />
                 <Spacer y={1.5} />
                 {/* Discussion Area */}
-                <Discussion postId={postId} />
+                <Discussion postId={postId} id="discussion"/>
               </Card>
             </Col>
           </Grid>

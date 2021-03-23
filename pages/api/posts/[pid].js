@@ -59,7 +59,7 @@ async function handlePUT(session, postId, req, res) {
   if (!session) {
     res.status(401).end('Unauthorized')
   }
-  // check if user wants to delete others' comment
+  // check if user wants to update others' post
   const postAuthorId = await prisma.user.findUnique({
     where: {
       Post: {
@@ -76,7 +76,7 @@ async function handlePUT(session, postId, req, res) {
     res.status(403).end('Forbidden')
   }
   // update post
-  const {id, title, slug, rawContent, tags, published} = req.body
+  const {id, title, slug, coverImage, rawContent, tags, published} = req.body
   const renderedContent = await remark()
     .use(html)
     .process(rawContent);
@@ -85,6 +85,7 @@ async function handlePUT(session, postId, req, res) {
     data: {
       title: title,
       slug: slug,
+      coverImage: coverImage,
       rawContent: rawContent,
       renderedContent: renderedContent.toString(),
       published: published,
