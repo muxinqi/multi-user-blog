@@ -23,13 +23,13 @@ import {
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
 import Footer from "components/Footer";
-import { useSession } from "next-auth/client";
+import { useSession, getSession } from "next-auth/client";
 import React, { useState } from "react";
 import { useCommentsByPostId } from "../../lib/useCommentsByPostId";
 import moment from "moment";
 
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, req }) {
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
   const data = await res.json();
 
@@ -37,6 +37,22 @@ export async function getServerSideProps({ params }) {
     return {
       notFound: true
     };
+  }
+  const isPrivatePost = !data.published
+  const session = await getSession({ req })
+  if (!session) {
+    if (isPrivatePost) {
+      return {
+        notFound: true
+      }
+    }
+  } else {
+    const visitorIsNotAuthor = data.author.email !== session.user.email
+    if (isPrivatePost && visitorIsNotAuthor ) {
+      return {
+        notFound: true
+      }
+    }
   }
   // post views increment
   fetch(`${process.env.BASE_URL}/api/posts/${params.id}/views`, {
@@ -50,8 +66,9 @@ export async function getServerSideProps({ params }) {
   }
 }
 
-const PostPage = ({ data, postId }) => {
+const PostPage = ({ data }) => {
   const {
+    id: postId,
     title,
     coverImage,
     createdAt,

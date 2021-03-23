@@ -17,7 +17,6 @@ const PostCard = ({ post }) => {
     coverImage,
     author
   } = post
-  console.log(tags);
   const tagTypeArray = ['default', 'secondary', 'success', 'warning', 'error', 'dark']
   const commentsCount = useCommentsCountByPostId(id)
 
@@ -42,15 +41,11 @@ const PostCard = ({ post }) => {
           <Link underline><Text h2 style={{ marginTop: "15px", marginBottom: "-10px" }}>{title}</Text></Link>
         </NextLink>
         <br />
-        {
-          tags.length > 0 ?
-          tags.map(tag => (
-              <Tag type={tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]} style={{ marginRight: "1%" }}
-                   key={tag.id}>#{tag.name}</Tag>
-            ))
-          :
-          <></>
-        }
+        {!tags && <></>}
+        {tags.map(tag => (
+          <Tag type={tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]} style={{ marginRight: "1%" }}
+               key={tag.id}>#{tag.name}</Tag>
+        ))}
         <Card.Footer>
           <User src={author.image} name={author.name} />
           <NextLink href={`/posts/${id}`}>

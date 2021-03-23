@@ -8,6 +8,10 @@ export default async function handler(req, res) {
   }
   switch (req.method) {
     case "GET":
+      if (Boolean(req.query.posts) === true) {
+        await handleGetPosts(session, res)
+        return
+      }
       await handleGET(session, res);
       break;
     default:
@@ -41,4 +45,19 @@ async function handleGET(session, res) {
   } else {
     res.status(200).json(data);
   }
+}
+
+async function handleGetPosts(session, res) {
+  const posts = await prisma.post.findMany({
+    where: {
+      author: {
+        email: session.user.email
+      }
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+  })
+  console.log("posts: ", posts);
+  res.status(200).json(posts)
 }

@@ -6,7 +6,7 @@ import {
   Card,
   Col,
   Grid,
-  Image,
+  Image, Link,
   Loading,
   Row,
   Spacer,
@@ -15,8 +15,8 @@ import {
   useMediaQuery
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
-import { useDashboardStats, useHomePosts } from "../lib/useHomePosts";
-import Link from "next/link";
+import { useDashboardPosts, useDashboardStats, useHomePosts } from "../lib/useHomePosts";
+import NextLink from "next/link";
 import { signIn, useSession } from "next-auth/client";
 
 const DashboardPage = () => {
@@ -41,14 +41,15 @@ const DashboardPage = () => {
   // Loading Dashboard Page
   const ltSM = useMediaQuery("sm", { match: "down" });
   const stats = useDashboardStats();
-  const posts = useHomePosts();
+  const posts = useDashboardPosts();
+  console.log("posts.posts: ", posts.posts);
   console.log("stats: ", JSON.stringify(stats.data));
   console.log("posts: ", JSON.stringify(posts.posts));
 
   const editOperation = (actions, rowData) => {
-    return <Link href={`/posts/${rowData.rowValue.id}/edit`}>
+    return <NextLink href={`/posts/${rowData.rowValue.id}/edit`}>
       <Button auto size="mini" type="success" ghost>Edit</Button>
-    </Link>;
+    </NextLink>;
   };
 
   const moreOperation = (actions, rowData) => {
@@ -70,16 +71,18 @@ const DashboardPage = () => {
       );
     };
     posts.posts.map(post => {
-      console.log("post: ", post);
       data.push({
         id: post.id,
+        visible: post.published ? <Icon.Unlock color="green" /> : <Icon.Lock color="red" />,
         title:
           <Row>
             <Col>
-              <Link href={`/posts/${post.id}`}>
+              <NextLink href={`/posts/${post.id}`}>
+                <a style={{ color: 'inherit' }}>
                 <Text b p style={{ marginBottom: "-6.18px" }}>{post.title}</Text>
-              </Link>
-              <Text small p type="secondary">{new Date(post.createdAt).toDateString()}</Text>
+                </a>
+              </NextLink>
+              <Text small p type="secondary" title={new Date(post.createdAt).toString()}>{new Date(post.createdAt).toDateString()}</Text>
               {
                 ltSM && <div style={{ marginBottom: "15px" }}>{postCountData(post.likesCount, post.viewsCount)}</div>
               }
@@ -176,19 +179,20 @@ const DashboardPage = () => {
                             posts, but you haven't written anything yet.</Text>
                         </Row>
                         <Row justify={"center"}>
-                          <Link href={"/new-post"}>
+                          <NextLink href={"/new-post"}>
                             <Button type="success-light">
                               <Text b>
                                 Write your first post now
                               </Text>
                             </Button>
-                          </Link>
+                          </NextLink>
                         </Row>
                       </>
                       :
                       <>
                         <Table data={data}>
                           <Table.Column prop="id" label="id" />
+                          <Table.Column prop="visible" label="visible" />
                           <Table.Column prop="title" label="Post" />
                           <Table.Column prop="stats" label="" />
                           <Table.Column prop="editOperation" label="edit" />
