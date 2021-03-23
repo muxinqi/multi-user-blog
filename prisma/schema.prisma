@@ -67,21 +67,21 @@ model VerificationRequest {
 }
 
 model Post {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   title           String
-  slug            String   @unique
-  coverImage      String?  @map(name: "cover_image")
-  createdAt       DateTime @default(now()) @map(name: "created_at")
-  rawContent      String   @map(name: "raw_content")
-  renderedContent String   @map(name: "rendered_content")
-  published       Boolean  @default(false)
-  author          User     @relation(fields: [authorId], references: [id])
-  authorId        Int      @map(name: "author_id")
-  like            Int      @default(0)
-  view            Int      @default(0)
+  slug            String    @unique
+  coverImage      String?   @map(name: "cover_image")
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+  rawContent      String    @map(name: "raw_content")
+  renderedContent String    @map(name: "rendered_content")
+  published       Boolean   @default(false)
+  author          User      @relation(fields: [authorId], references: [id])
+  authorId        Int       @map(name: "author_id")
+  likesCount      Int       @default(0) @map(name: "likes_count")
+  viewsCount      Int       @default(0) @map(name: "views_count")
+  tags            Tag[]     @relation(name: "tag_on_post")
+  comments        Comment[]
 
-  tags     Tag[]
-  comments Comment[]
   @@map(name: "posts")
 }
 
@@ -101,7 +101,7 @@ model Comment {
 model Tag {
   id    Int    @id @default(autoincrement())
   name  String
-  posts Post[]
+  posts Post[] @relation(name: "tag_on_post")
 
   @@map(name: "tag")
 }

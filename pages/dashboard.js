@@ -81,13 +81,13 @@ const DashboardPage = () => {
               </Link>
               <Text small p type="secondary">{new Date(post.createdAt).toDateString()}</Text>
               {
-                ltSM && <div style={{ marginBottom: "15px" }}>{postCountData(post.like, post.view)}</div>
+                ltSM && <div style={{ marginBottom: "15px" }}>{postCountData(post.likesCount, post.viewsCount)}</div>
               }
             </Col>
           </Row>,
         stats: <>
           {
-            ltSM ? <></> : postCountData(post.like, post.view)
+            ltSM ? <></> : postCountData(post.likesCount, post.viewsCount)
           }
         </>,
         editOperation,
@@ -130,7 +130,7 @@ const DashboardPage = () => {
                     {
                       stats.data &&
                       <Text size={30} b>
-                        {stats.data.view < 500 ? "&lt;&nbsp;500" : stats.data.view}
+                        {stats.data.view < 500 ? '< 500' : stats.data.view}
                       </Text>
                     }
                     <Text type="secondary">Total post views</Text>

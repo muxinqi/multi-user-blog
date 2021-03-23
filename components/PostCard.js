@@ -1,6 +1,8 @@
-import { Button, Card, Link, Row, Tag, Text, useMediaQuery, User } from "@geist-ui/react";
+import { Button, Card, Link, Loading, Row, Tag, Text, useMediaQuery, User } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
 import Image from "next/image";
+import { useCommentsCountByPostId } from "../lib/useHomePosts";
+import NextLink from "next/link"
 
 const PostCard = ({ post }) => {
   const isXS = useMediaQuery('xs')
@@ -9,36 +11,64 @@ const PostCard = ({ post }) => {
     title,
     slug,
     createdAt,
+    likesCount,
+    viewsCount,
     tags,
     coverImage,
     author
   } = post
+  console.log(tags);
   const tagTypeArray = ['default', 'secondary', 'success', 'warning', 'error', 'dark']
+  const commentsCount = useCommentsCountByPostId(id)
 
-  const commentsCount = 0
   return (
     <Row style={{ marginBottom: "15px" }}>
       <Card shadow style={{ width: "100%" }}>
         {!coverImage && <></>}
         {coverImage &&
-        <Image
-          src={coverImage}
-          alt="Post Cover Image"
-          layout="responsive"
-          width={210}
-          height={90}
-        />
+          <NextLink href={`/posts/${id}`}>
+            <a>
+            <Image
+              src={coverImage}
+              alt="Post Cover Image"
+              layout="responsive"
+              width={210}
+              height={90}
+            />
+            </a>
+          </NextLink>
         }
-        <Link href={`/posts/${id}`}><Text h2>{title}</Text></Link>
-        {/*<Text type="secondary">{description}</Text>*/}
+        <NextLink href={`/posts/${id}`}>
+          <Link underline><Text h2 style={{ marginTop: "15px", marginBottom: "-10px" }}>{title}</Text></Link>
+        </NextLink>
         <br />
-        {tags.map(tag => (
-          <Tag type={tagTypeArray[Math.floor(Math.random()*tagTypeArray.length)]} style={{ marginRight: "1%" }} key={tag.id}>#{tag.name}</Tag>
-        ))}
+        {
+          tags.length > 0 ?
+          tags.map(tag => (
+              <Tag type={tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]} style={{ marginRight: "1%" }}
+                   key={tag.id}>#{tag.name}</Tag>
+            ))
+          :
+          <></>
+        }
         <Card.Footer>
           <User src={author.image} name={author.name} />
-          <Button auto icon={<Icon.Heart />} style={{ marginRight: "2%" }}>&nbsp;{commentsCount}&nbsp;&nbsp;{isXS ? "" : "reactions"}</Button>
-          <Button auto icon={<Icon.MessageCircle />}>&nbsp;{commentsCount}&nbsp;&nbsp;{isXS ? "" : "comments"}</Button>
+          <NextLink href={`/posts/${id}`}>
+            <Button auto icon={<Icon.Heart />}
+                    style={{ marginRight: "2%" }}>{likesCount}&nbsp;{isXS ? "" : "reactions"}</Button>
+          </NextLink>
+          {
+            typeof(commentsCount.data) == 'undefined' &&
+            <Loading />
+          }
+          {
+            typeof(commentsCount.data) !== 'undefined' &&
+              <NextLink href={`/posts/${id}#discussion`}>
+                <Button auto icon={<Icon.MessageCircle />}>
+                  {commentsCount.data.toString()}&nbsp;{isXS ? "" : "comments"}
+                </Button>
+              </NextLink>
+          }
         </Card.Footer>
       </Card>
     </Row>

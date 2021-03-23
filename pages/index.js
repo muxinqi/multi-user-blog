@@ -61,7 +61,6 @@ export default function HomePage() {
             <Col>
               <PostFeed />
             </Col>
-
           </Grid>
           <Grid xs={0} lg={5.5} xl={5.5}>
             {/* Right SideBar */}

@@ -4,11 +4,9 @@ import remark from "remark";
 import html from "remark-html";
 
 export default async function handler(req, res) {
-  const postId = req.query.pid;
-
   switch (req.method) {
     case "GET":
-      await handleGET(postId, res);
+      await handleGET(req, res);
       break;
     case "POST":
       await handlePOST(req, res);
@@ -20,7 +18,14 @@ export default async function handler(req, res) {
 }
 
 // GET /api/posts/:pid/comments
-async function handleGET(postId, res) {
+// GET /api/posts/:pid/comments?count
+async function handleGET(req, res) {
+  const postId = req.query.pid
+  const countComments = Boolean(req.query.count)
+  if (countComments) {
+    await handleCountComments(postId, res)
+    return
+  }
   const comments = await prisma.comment.findMany({
     where: { postId: Number(postId) },
     orderBy: { createdAt: "desc" },
@@ -53,4 +58,19 @@ async function handlePOST(req, res) {
     });
     res.status(201).json(result);
   }
+}
+
+async function handleCountComments(postId, res) {
+  const postData = await prisma.post.findUnique({
+    where: { id: Number(postId) }
+  })
+  if (!postData) {
+    res.status(404).end()
+    return;
+  }
+  const commentsCount = await prisma.comment.count({
+    where: { postId: Number(postId) }
+  })
+
+  res.status(200).json(Number(commentsCount))
 }

@@ -28,13 +28,13 @@ async function handleGET(session, res) {
       authorId: user.id
     },
     sum: {
-      like: true,
-      view: true
+      likesCount: true,
+      viewsCount: true
     }
   });
   const data = {
-    view: countData[0].sum.view,
-    like: countData[0].sum.like
+    view: countData[0].sum.viewsCount,
+    like: countData[0].sum.likesCount
   };
   if (!countData) {
     res.status(404).end("Not Found");
