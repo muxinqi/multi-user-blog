@@ -12,7 +12,7 @@ import {
   Text,
   useToasts
 } from "@geist-ui/react";
-import React from "react"
+import React from "react";
 import { useRouter } from "next/router";
 import * as Icon from "@geist-ui/react-icons";
 import ReactMarkdown from "react-markdown";

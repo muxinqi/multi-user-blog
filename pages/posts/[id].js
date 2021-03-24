@@ -23,9 +23,9 @@ import {
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
 import Footer from "components/Footer";
-import { useSession, getSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/client";
 import React, { useState } from "react";
-import { useCommentsByPostId } from "../../lib/useCommentsByPostId";
+import { useCommentsByPostId } from "lib/useCommentsByPostId";
 import moment from "moment";
 
 

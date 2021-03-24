@@ -1,4 +1,4 @@
-import Layout from 'components/next-auth/layout'
+import Layout from "components/next-auth/layout";
 
 export default function Page () {
   return (

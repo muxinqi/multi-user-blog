@@ -1,5 +1,5 @@
 import prisma from "lib/prisma";
-import {getSession} from "next-auth/client"
+import { getSession } from "next-auth/client";
 import remark from "remark";
 import html from "remark-html";
 
@@ -43,13 +43,46 @@ async function handleGET(postId, res) {
 
 // DELETE /api/posts/:pid
 async function handleDELETE(session, postId, res) {
+  // check if user has logged in
   if (!session) {
     res.status(401).end('Unauthorized')
+    return
+  }
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { id: true }
+  })
+  if (!user) {
+    res.status(401).end('Unauthorized')
+    return
+  }
+  const post = await prisma.post.findUnique({
+    where: { id: Number(postId) },
+    include: {
+      author: {
+        select: {
+          id: true
+        }
+      }
+    }
+  })
+  if (!post) {
+    res.status(404).send()
+    return
+  }
+  const userIsNotAuthor = user.id !== post.author.id
+  if (userIsNotAuthor) {
+    res.status(403).send()
+    return
+  }
+
+  const deletedPost = await prisma.post.delete({
+    where: { id: Number(postId) },
+  })
+  if (!deletedPost) {
+    res.status(500).send()
   } else {
-    const post = await prisma.post.delete({
-      where: {id: Number(postId)},
-    })
-    res.status(204).json(post)
+    res.status(204).send()
   }
 }
 

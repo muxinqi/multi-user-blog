@@ -1,5 +1,5 @@
-import {GeistProvider, CssBaseline, Themes} from "@geist-ui/react";
-import { Provider } from "next-auth/client"
+import { CssBaseline, GeistProvider, Themes } from "@geist-ui/react";
+import { Provider } from "next-auth/client";
 
 const breakpoints = {
   xs: { min: '0', max: '640px' },
