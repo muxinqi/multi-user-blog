@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "eslint": "^7.21.0",
-    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react": "^7.23.1",
     "prisma": "^2.18.0"
   }
 }
