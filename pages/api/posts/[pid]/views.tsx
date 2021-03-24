@@ -25,8 +25,8 @@ const handlePATCH = async (postId, res: NextApiResponse) => {
     }
   })
   if (!result) {
-    res.status(500).end()
+    res.status(500).end('Internal Error')
   } else {
-    res.status(200).end()
+    res.status(200).json(result)
   }
 }
