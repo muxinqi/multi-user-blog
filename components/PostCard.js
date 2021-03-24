@@ -3,6 +3,7 @@ import * as Icon from "@geist-ui/react-icons";
 import Image from "next/image";
 import { useCommentsCountByPostId } from "../lib/useHomePosts";
 import NextLink from "next/link"
+import moment from "moment";
 
 const hash = s => {
   return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
@@ -52,6 +53,7 @@ const PostCard = ({ post }) => {
         ))}
         <Card.Footer>
           <User src={avatarUrl} name={author.name ? author.name : "User"} >
+            {moment(createdAt).fromNow()}
           </User>
           <NextLink href={`/posts/${id}`}>
             <Button auto icon={<Icon.Heart />}

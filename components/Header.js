@@ -1,11 +1,10 @@
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   Grid,
   Input,
-  Link,
+  Link, Loading,
   Page,
   Popover,
   Spacer,
@@ -35,13 +34,19 @@ const Header = () => {
         <span>{session.user.name}</span>
       </Popover.Item>
       <Popover.Item>
-        <Link href={"/dashboard"}> Dashboard </Link>
+        <NextLink href={"/dashboard"}>
+          <Link> Dashboard </Link>
+        </NextLink>
       </Popover.Item>
       <Popover.Item>
-        <Link href={"/new-post"}> Write a post </Link>
+        <NextLink href={"/new-post"}>
+          <Link> Write a post </Link>
+        </NextLink>
       </Popover.Item>
       <Popover.Item>
-        <Link href={"/settings"}> Settings </Link>
+        <NextLink href={"/settings"}>
+          <Link> Settings </Link>
+        </NextLink>
       </Popover.Item>
       <Popover.Item line />
       <Popover.Item>
@@ -61,18 +66,18 @@ const Header = () => {
         <Grid.Container justify={"center"} >
           {/* More Option */}
           <Grid xs={4} sm={0}>
-            <Link href={"/"}>
+            <NextLink href={"/"}>
               <Button size={isXS ? "small":"medium"} auto icon={<Icon.Menu />}/>
-            </Link>
+            </NextLink>
           </Grid>
 
           {/* Blog Logo */}
           <Grid xs={0} sm={4} md={3.5} lg={3}>
-            <Link href={"/"}>
+            <NextLink href={"/"}>
               <Button auto type="secondary-light">
                 <Text h3> Blog </Text>
               </Button>
-            </Link>
+            </NextLink>
           </Grid>
 
           {/* Search Bar */}
@@ -83,7 +88,7 @@ const Header = () => {
           {/* Blank Bar */}
           <Grid xs={6.5} sm={4} md={5} lg={5} xl={4} />
 
-
+          {loading && <Loading />}
           {!session && <>
             {/* Login Button */}
             <Grid xs={0} sm={3.5} md={3} lg={3} xl={2}>
@@ -99,21 +104,20 @@ const Header = () => {
 
             {/* Sign Up Button */}
             <Grid xs={9.5} sm={5.5} md={4.5} lg={4} xl={3}>
-              <Link href={"/enter?state=new-user"}>
-                <Button size={isXS ? "small":"medium"} auto type="success-light">
-                  <Text b> Create account </Text>
-                </Button>
-              </Link>
+              <Button size={isXS ? "small":"medium"} auto type="success-light"
+                      onClick={() => signIn()}>
+                <Text b> Create account </Text>
+              </Button>
             </Grid>
           </>}
           {session && <>
             {/* Write post  button */}
             <Grid xs={10} md={4.5} lg={3.5} xl={2.5}>
-              <Link href={"/new-post"}>
+              <NextLink href={"/new-post"}>
                 <Button size={isXS ? "small":"medium"} auto type="success-light">
                   <Text b> Write a post </Text>
                 </Button>
-              </Link>
+              </NextLink>
             </Grid>
 
             {/* Avatar Popover */}

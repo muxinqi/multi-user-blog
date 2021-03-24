@@ -6,6 +6,8 @@ import Footer from "components/Footer";
 import { useHomePosts } from "lib/useHomePosts";
 import { SITE_NAME } from "lib/constants";
 import Head from "next/head"
+import { signIn, useSession } from 'next-auth/client'
+import NextLink from "next/link"
 
 function PostFeed() {
   const { posts, isLoading, isError } = useHomePosts();
@@ -21,7 +23,7 @@ function PostFeed() {
 }
 
 export default function HomePage() {
-
+  const [ session, loading ] = useSession()
   const text = "M Blog is a community of 34567,678 amazing developers";
   const smallText = "We're a place where coders share, stay up-to-date and grow their careers.";
 
@@ -40,23 +42,39 @@ export default function HomePage() {
             {/* Left SideBar */}
             <Col>
               <Row style={{ flexWrap: 'wrap' }}>
-                <Card shadow style={{width: '100%'}}>
-                  <Text h5>{text}</Text>
-                  <Text small>{smallText}</Text>
-                  <Spacer y={0.618}/>
-                  <Row justify={"center"}>
-                    <Button auto type="success-light">Create account</Button>
-                  </Row>
-                  <Spacer y={0.618}/>
-                  <Row justify={"center"}>
-                    <Button auto>Log in</Button>
-                  </Row>
-                </Card>
-                <Spacer y={1}/>
-                <Button auto icon={<Icon.Home/>} style={{width: '100%'}}><Link href={"/"}>Home</Link></Button>
+                {loading && <Loading />}
+                {
+                  !session &&
+                    <>
+                      <Card shadow style={{width: '100%'}}>
+                        <Text h5>{text}</Text>
+                        <Text small>{smallText}</Text>
+                        <Spacer y={0.618}/>
+                        <Row justify={"center"}>
+                          <Button auto type="success-light">Create account</Button>
+                        </Row>
+                        <Spacer y={0.618}/>
+                        <Row justify={"center"}>
+                          <Button auto>Log in</Button>
+                        </Row>
+                      </Card>
+                      <Spacer y={1}/>
+                    </>
+                }
+                <Button auto icon={<Icon.Home/>} style={{width: '100%'}}>
+                  <NextLink href={"/"}>
+                    <Link>Home</Link>
+                  </NextLink>
+                </Button>
                 <Spacer y={0.3}/>
-                <Button auto icon={<Icon.Key/>} style={{width: '100%'}}><Link href={"/"}>Sign In/Up</Link></Button>
-                <Spacer y={0.3}/>
+                {loading && <Loading />}
+                {
+                  !session &&
+                  <>
+                    <Button auto icon={<Icon.Key/>} style={{width: '100%'}} onClick={() => signIn()}><Link href={"/"}>Sign In/Up</Link></Button>
+                    <Spacer y={0.3}/>
+                  </>
+                }
                 <Button auto icon={<Icon.Archive/>} style={{width: '100%'}}><Link href={"/"}>Archive</Link></Button>
               </Row>
             </Col>
