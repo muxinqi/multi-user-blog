@@ -1,9 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 import remark from "remark";
 import html from "remark-html";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const postId = req.query.pid
   const session = await getSession({req})
 
@@ -19,12 +20,12 @@ export default async function handler(req, res) {
       break
     default:
       res.setHeader('Allow', ['GET', 'DELETE'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      res.status(405).end(`Method ${req.method} Not Allowed`)
   }
 }
 
 // GET /api/posts/:pid
-async function handleGET(postId, res) {
+async function handleGET(postId, res: NextApiResponse) {
   const post = await prisma.post.findUnique({
     where: {
       id: Number(postId)
@@ -42,7 +43,7 @@ async function handleGET(postId, res) {
 }
 
 // DELETE /api/posts/:pid
-async function handleDELETE(session, postId, res) {
+async function handleDELETE(session, postId, res: NextApiResponse) {
   // check if user has logged in
   if (!session) {
     res.status(401).end('Unauthorized')
@@ -67,12 +68,12 @@ async function handleDELETE(session, postId, res) {
     }
   })
   if (!post) {
-    res.status(404).send()
+    res.status(404).end()
     return
   }
   const userIsNotAuthor = user.id !== post.author.id
   if (userIsNotAuthor) {
-    res.status(403).send()
+    res.status(403).end()
     return
   }
 
@@ -80,14 +81,14 @@ async function handleDELETE(session, postId, res) {
     where: { id: Number(postId) },
   })
   if (!deletedPost) {
-    res.status(500).send()
+    res.status(500).end()
   } else {
-    res.status(204).send()
+    res.status(204).end()
   }
 }
 
 // PUT /api/posts/:pid
-async function handlePUT(session, postId, req, res) {
+async function handlePUT(session, postId, req: NextApiRequest, res: NextApiResponse) {
   // Guest
   if (!session) {
     res.status(401).end('Unauthorized')
@@ -125,7 +126,7 @@ async function handlePUT(session, postId, req, res) {
     }
   })
   if (!result) {
-    res.status(500)
+    res.status(500).end()
   } else {
     res.status(200).json(result)
   }

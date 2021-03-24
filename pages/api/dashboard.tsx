@@ -1,7 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from "next-auth/client";
 import prisma from "lib/prisma";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req });
   if (!session) {
     res.status(401).end("Unauthorized");
@@ -20,7 +21,7 @@ export default async function handler(req, res) {
   }
 }
 
-async function handleGET(session, res) {
+async function handleGET(session, res: NextApiResponse) {
   const user = await prisma.user.findUnique({
     where: {
       email: session.user.email
@@ -47,7 +48,7 @@ async function handleGET(session, res) {
   }
 }
 
-async function handleGetPosts(session, res) {
+async function handleGetPosts(session, res: NextApiResponse) {
   const posts = await prisma.post.findMany({
     where: {
       author: {

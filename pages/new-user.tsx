@@ -6,7 +6,7 @@ import Head from "next/head";
 
 function NewUserPage() {
   const router = useRouter()
-  const [value, setValue] = useState()
+  const [value, setValue] = useState('')
   const [, setToast] = useToasts()
   async function handleClick() {
     // username is empty

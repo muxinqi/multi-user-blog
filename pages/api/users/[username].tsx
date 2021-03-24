@@ -1,7 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   switch (req.method) {
     case 'GET':
@@ -12,12 +13,12 @@ export default async function handler(req, res) {
       break
     default:
       res.setHeader('Allow', ['GET', 'PATCH'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      res.status(405).end(`Method ${req.method} Not Allowed`)
   }
 }
 
 // GET /api/users/:username
-async function handleGET(req, res) {
+async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const username = req.query.username
   const checkAvailable = Boolean(req.query.checkAvailable)
 
@@ -35,7 +36,7 @@ async function handleGET(req, res) {
 }
 // PATCH /api/users/:username
 // set username
-async function handlePATCH(req, res) {
+async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
   const username = req.query.username
   const session = await getSession({ req })
   // if user not logged in

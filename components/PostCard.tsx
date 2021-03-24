@@ -47,10 +47,11 @@ const PostCard = ({ post }) => {
         </NextLink>
         <br />
         {!tags && <></>}
-        {tags.map(tag => (
-          <Tag type={tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]} style={{ marginRight: "1%" }}
+        {tags.map(tag => {
+          return (
+          <Tag type={"default"} style={{ marginRight: "1%" }}
                key={tag.id}>#{tag.name}</Tag>
-        ))}
+          )})}
         <Card.Footer>
           <User src={avatarUrl} name={author.name ? author.name : "User"} >
             {moment(createdAt).fromNow()}

@@ -34,17 +34,23 @@ const DashboardPage = () => {
   if (!loading && !session) {
     const handleClick = (e) => {
       e.preventDefault();
-      signIn({
+      signIn(null, {
         callbackUrl: `${process.env.BASE_URL}/dashboard`
-      });
-    };
+      })
+    }
     return (
-      <div align="center">
+      <div style={{ textAlign: 'center' }}>
         <h1>❌ Access Denied</h1>
         <strong>Please <Button auto size="small" type="success-light" ghost
-                               onClick={handleClick}>Login</Button> first</strong>
+                               onClick={handleClick}><Text b> Login </Text></Button> first</strong>
+        <h2>or</h2>
+        <strong>You can back to &nbsp;
+          <NextLink href={"/"}>
+            <Button auto size="small" type="success-light"><Text b>Home</Text></Button>
+          </NextLink>
+        </strong>
       </div>
-    );
+    )
   }
   // Loading Dashboard Page
   const ltSM = useMediaQuery("sm", { match: "down" });

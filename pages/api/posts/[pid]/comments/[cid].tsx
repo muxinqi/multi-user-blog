@@ -1,7 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
   const commentId = req.query.cid
 
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
 }
 
 // DELETE /api/posts/:pid/comments/:cid
-async function handleDELETE(session, commentId, res) {
+async function handleDELETE(session, commentId, res: NextApiResponse) {
   // Guest
   if (!session) {
     res.status(401).end('Unauthorized')

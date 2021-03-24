@@ -1,7 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   switch (req.method) {
     case 'PATCH':
@@ -14,7 +15,7 @@ export default async function handler(req, res) {
 }
 
 // PATCH /api/posts/:pid/likes
-const handlePATCH = async (req, res) => {
+const handlePATCH = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req })
   // if not logged in
   if (!session) {

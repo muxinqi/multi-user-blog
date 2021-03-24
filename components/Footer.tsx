@@ -1,10 +1,6 @@
 import {Card, Col, Divider, Grid, Link, Page, Row, Spacer, Text} from "@geist-ui/react";
 import * as Icon from '@geist-ui/react-icons';
 
-const MockItem = () => {
-  return <Card shadow style={{ width: '100%', height: '50px' }} />
-}
-
 const Footer = () => {
   return (
     <div>

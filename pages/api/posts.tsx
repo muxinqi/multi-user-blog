@@ -1,9 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 import remark from "remark";
 import html from "remark-html";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   switch (req.method) {
     case "GET":
@@ -14,12 +15,12 @@ export default async function handler(req, res) {
       break;
     default:
       res.setHeader('Allow', ['GET', 'POST'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      res.status(405).end(`Method ${req.method} Not Allowed`)
   }
 }
 
 // GET /api/posts
-async function handleGET(res) {
+async function handleGET(res: NextApiResponse) {
   const posts = await prisma.post.findMany({
     where: {
       published: true,
@@ -32,7 +33,7 @@ async function handleGET(res) {
 }
 
 // POST /api/posts
-async function handlePOST(req, res) {
+async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req });
   // if not logged in
   if (!session) {

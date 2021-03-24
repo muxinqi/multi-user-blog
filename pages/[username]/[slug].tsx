@@ -79,7 +79,7 @@ const PostPage = () => {
             <Col>
               <Card shadow style={{width: '100%'}} >
                 {/* Post Header Image */}
-                <Image width="100%" src={postHeadImageUrl} />
+                <Image src={postHeadImageUrl} />
                 <Spacer y={3} />
                 {/* Post Title */}
                 <Text h1>{title}</Text>

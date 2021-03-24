@@ -9,6 +9,6 @@ export const checkUsername = path => {
   }
 
   const url = baseUrl + path
-  const { "isAvailable": isAvailable , error } = useSWR(url, fetcher)
-  return { isAvailable, error }
+  const { data , error } = useSWR(url, fetcher)
+  return { isAvailable: data, error }
 }

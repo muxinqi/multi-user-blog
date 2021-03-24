@@ -1,7 +1,8 @@
-import { CssBaseline, GeistProvider, Themes } from "@geist-ui/react";
+import type { AppProps } from "next/app";
+import { CssBaseline, GeistProvider, GeistUIThemesBreakpoints, Themes } from "@geist-ui/react";
 import { Provider } from "next-auth/client";
 
-const breakpoints = {
+const breakpoints: GeistUIThemesBreakpoints = {
   xs: { min: '0', max: '640px' },
   sm: { min: '640px', max: '768px' },
   md: { min: '768px', max: '1024px' },
@@ -9,7 +10,7 @@ const breakpoints = {
   xl: { min: '1280px', max: '10000px' },
 }
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   const myTheme = Themes.createFromLight({
     type: 'myTheme',
     breakpoints,

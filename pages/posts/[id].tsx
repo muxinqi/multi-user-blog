@@ -29,8 +29,9 @@ import { useCommentsByPostId } from "lib/useCommentsByPostId";
 import moment from "moment";
 import Head from 'next/head'
 import { SITE_NAME } from "lib/constants";
+import { GetServerSideProps } from "next"
 
-export async function getServerSideProps({ params, req }) {
+export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
   const data = await res.json();
 
@@ -58,7 +59,8 @@ export async function getServerSideProps({ params, req }) {
   // post views increment
   fetch(`${process.env.BASE_URL}/api/posts/${params.id}/views`, {
     method: "PATCH"
-  })
+  }).then(res => res.json())
+
   return {
     props: {
       data,
@@ -139,13 +141,14 @@ const PostPage = ({ data }) => {
             <Col>
               <Card shadow style={{width: '100%'}} >
                 {/* Post Header Image */}
-                <Image width="100%" src={coverImage} />
+                <Image src={coverImage} />
                 <Spacer y={3} />
                 {/* Post Title */}
                 <Text h1>{title}</Text>
                 <Row>
                 {tags.map(tag => (
-                  <Tag type={tagTypeArray[Math.floor(Math.random()*tagTypeArray.length)]} style={{ marginRight: "1%" }} key={tag.id}>#{tag.name}</Tag>
+                  <Tag type={"default"}
+                       style={{ marginRight: "1%" }} key={tag.id}>#{tag.name}</Tag>
                 ))}
                 </Row>
                 <Spacer y={0.618}/>
@@ -163,7 +166,8 @@ const PostPage = ({ data }) => {
                 <Divider />
                 <Spacer y={1.5} />
                 {/* Discussion Area */}
-                <Discussion postId={postId} id="discussion"/>
+                <div id="discussion"/>
+                <Discussion postId={postId}/>
               </Card>
             </Col>
           </Grid>

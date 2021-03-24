@@ -1,9 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 import remark from "remark";
 import html from "remark-html";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "GET":
       await handleGET(req, res);
@@ -19,7 +20,7 @@ export default async function handler(req, res) {
 
 // GET /api/posts/:pid/comments
 // GET /api/posts/:pid/comments?count
-async function handleGET(req, res) {
+async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const postId = req.query.pid
   const countComments = Boolean(req.query.count)
   if (countComments) {
@@ -39,7 +40,7 @@ async function handleGET(req, res) {
 }
 
 // POST /api/posts/:pid/comments
-async function handlePOST(req, res) {
+async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
   if (!session) {
     res.status(401).end('Unauthorized')
@@ -60,7 +61,7 @@ async function handlePOST(req, res) {
   }
 }
 
-async function handleCountComments(postId, res) {
+async function handleCountComments(postId, res: NextApiResponse) {
   const postData = await prisma.post.findUnique({
     where: { id: Number(postId) }
   })

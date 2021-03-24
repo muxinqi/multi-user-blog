@@ -22,8 +22,9 @@ import "react-mde/lib/styles/css/react-mde-toolbar.css";
 import "react-mde/lib/styles/css/react-mde-editor.css";
 import Head from 'next/head'
 import { SITE_NAME } from "lib/constants";
+import { GetServerSideProps } from 'next'
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
   const data = await res.json();
 
@@ -53,7 +54,7 @@ const EditPostPage = ({ data, postId }) => {
   const [imageIsLoading, setImageIsLoading] = React.useState(false);
   const [tags, setTags] = React.useState(data.tags);
   const [value, setValue] = React.useState(data.rawContent);
-  const [selectedTab, setSelectedTab] = React.useState("write");
+  const [selectedTab, setSelectedTab] = React.useState<"write" | "preview">("write");
   const [toasts, setToast] = useToasts();
   const router = useRouter();
 
@@ -130,27 +131,27 @@ const EditPostPage = ({ data, postId }) => {
       });
   }
 
-  const save = async function* (data) {
-    // Promise that waits for "time" milliseconds
-    const wait = function(time) {
-      return new Promise((a, r) => {
-        setTimeout(() => a(), time);
-      });
-    };
-
-    // Upload "data" to your server
-    // Use XMLHttpRequest.send to send a FormData object containing
-    // "data"
-    // Check this question: https://stackoverflow.com/questions/18055422/how-to-receive-php-image-data-over-copy-n-paste-javascript-with-xmlhttprequest
-
-    await wait(2000);
-    // yields the URL that should be inserted in the markdown
-    yield "https://picsum.photos/300";
-    await wait(2000);
-
-    // returns true meaning that the save was successful
-    return true;
-  };
+  // const save = async function* (data) {
+  //   // Promise that waits for "time" milliseconds
+  //   const wait = function(time) {
+  //     return new Promise((a, r) => {
+  //       setTimeout(() => a(), time);
+  //     });
+  //   };
+  //
+  //   // Upload "data" to your server
+  //   // Use XMLHttpRequest.send to send a FormData object containing
+  //   // "data"
+  //   // Check this question: https://stackoverflow.com/questions/18055422/how-to-receive-php-image-data-over-copy-n-paste-javascript-with-xmlhttprequest
+  //
+  //   await wait(2000);
+  //   // yields the URL that should be inserted in the markdown
+  //   yield "https://picsum.photos/300";
+  //   await wait(2000);
+  //
+  //   // returns true meaning that the save was successful
+  //   return true;
+  // };
 
   return (
     <>
@@ -193,7 +194,7 @@ const EditPostPage = ({ data, postId }) => {
                     </Input>
                   </Grid>
                   <Grid xs={24} lg={12}>
-                    <AutoComplete icon={<Icon.Hash />} width="100%" placeholder={"Add Up To 4 Tags..."}
+                    <AutoComplete width="100%" placeholder={"Add Up To 4 Tags..."}
                                   options={tagOptions} />
                   </Grid>
                 </Grid.Container>
@@ -217,9 +218,9 @@ const EditPostPage = ({ data, postId }) => {
                           tabIndex: -1
                         }
                       }}
-                      paste={{
-                        saveImage: save
-                      }}
+                      // paste={{
+                      //   saveImage: save
+                      // }}
                     />
                   </div>
                 </Card>
