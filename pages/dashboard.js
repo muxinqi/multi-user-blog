@@ -50,9 +50,6 @@ const DashboardPage = () => {
   const ltSM = useMediaQuery("sm", { match: "down" });
   const stats = useDashboardStats();
   const posts = useDashboardPosts();
-  console.log("posts.posts: ", posts.posts);
-  console.log("stats: ", JSON.stringify(stats.data));
-  console.log("posts: ", JSON.stringify(posts.posts));
 
   const editOperation = (actions, rowData) => {
     return <NextLink href={`/posts/${rowData.rowValue.id}/edit`}>

@@ -42,7 +42,6 @@ export async function getServerSideProps({ params }) {
 }
 
 const EditPostPage = ({ data, postId }) => {
-  console.log(JSON.stringify(data));
   const tagOptions = [
     { label: "London", value: "london" },
     { label: "Sydney", value: "sydney" },

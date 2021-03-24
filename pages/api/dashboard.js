@@ -58,6 +58,5 @@ async function handleGetPosts(session, res) {
       createdAt: 'desc'
     },
   })
-  console.log("posts: ", posts);
   res.status(200).json(posts)
 }
