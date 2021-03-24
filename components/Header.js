@@ -22,7 +22,6 @@ const hash = s => {
 
 const Header = () => {
   const [ session, loading ] = useSession()
-  const avatarUrl = session.user.image ? session.user.image : 'https://www.gravatar.com/avatar/'+hash(session.user.email+'')
   const [visible, setVisible] = useState(false)
   const changeHandler = (next) => {
     setVisible(next)
@@ -126,7 +125,7 @@ const Header = () => {
               <Popover content={content} visible={visible}
                        trigger={"hover"} placement={"bottomEnd"}
                        onVisibleChange={changeHandler}>
-                <Avatar size={isXS ? 36 : 42 } src={session.user.image || avatarUrl} />
+                <Avatar size={isXS ? 36 : 42 } src={session.user.image ? session.user.image : 'https://www.gravatar.com/avatar/'+hash(session.user.email+'')} />
               </Popover>
             </Grid>
           </>}
