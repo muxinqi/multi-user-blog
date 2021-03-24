@@ -20,6 +20,8 @@ import "react-mde/lib/styles/css/react-mde.css";
 import "react-mde/lib/styles/css/react-mde-toolbar.css";
 import "react-mde/lib/styles/css/react-mde-editor.css";
 import { useRouter } from "next/router";
+import { SITE_NAME } from "lib/constants";
+import Head from "next/head"
 
 
 const NewPostPage = () => {
@@ -128,6 +130,9 @@ const NewPostPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Write New Post - {SITE_NAME}</title>
+      </Head>
       {/*<Header />*/}
       <Page.Body>
         <Grid.Container justify={"center"} style={{ marginTop: "-35px", paddingLeft: "3%", paddingRight: "3%" }}>

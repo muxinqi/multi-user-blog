@@ -20,6 +20,8 @@ import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde.css";
 import "react-mde/lib/styles/css/react-mde-toolbar.css";
 import "react-mde/lib/styles/css/react-mde-editor.css";
+import Head from 'next/head'
+import { SITE_NAME } from "lib/constants";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
@@ -153,6 +155,9 @@ const EditPostPage = ({ data, postId }) => {
 
   return (
     <>
+      <Head>
+        <title>Edit Post - {SITE_NAME}</title>
+      </Head>
       {/*<Header />*/}
       <Page.Body>
         <Grid.Container justify={"center"} style={{ marginTop: "-35px", paddingLeft: "3%", paddingRight: "3%" }}>

@@ -1,6 +1,8 @@
 import { Button, Col, Grid, Input, Page, Row, Spacer, useToasts } from "@geist-ui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { SITE_NAME } from "../lib/constants";
+import Head from "next/head";
 
 function NewUserPage() {
   const router = useRouter()
@@ -36,23 +38,28 @@ function NewUserPage() {
     console.log(result)
   }
   return (
-    <Page.Body>
-      <Grid.Container justify={"center"}>
-        <Grid style={{ marginTop: "20vh" }}>
-          <Col>
-            <Row>
-              <Input value={value} name="username" onChange={handler} placeholder="4-16 digits, including numbers or letters" style={{ width: "61.8vh" }} >
-                Enter username:
-              </Input>
-            </Row>
-            <Spacer y={0.618}/>
-            <Row justify="center">
-              <Button type="success-light" onClick={handleClick}>Confirm</Button>
-            </Row>
-          </Col>
-        </Grid>
-      </Grid.Container>
-    </Page.Body>
+    <>
+      <Head>
+        <title>New User - {SITE_NAME}</title>
+      </Head>
+      <Page.Body>
+        <Grid.Container justify={"center"}>
+          <Grid style={{ marginTop: "20vh" }}>
+            <Col>
+              <Row>
+                <Input value={value} name="username" onChange={handler} placeholder="4-16 digits, including numbers or letters" style={{ width: "61.8vh" }} >
+                  Enter username:
+                </Input>
+              </Row>
+              <Spacer y={0.618}/>
+              <Row justify="center">
+                <Button type="success-light" onClick={handleClick}>Confirm</Button>
+              </Row>
+            </Col>
+          </Grid>
+        </Grid.Container>
+      </Page.Body>
+    </>
   )
 }
 

@@ -4,6 +4,8 @@ import PostCard from "components/PostCard";
 import Header from "components/Header";
 import Footer from "components/Footer";
 import { useHomePosts } from "lib/useHomePosts";
+import { SITE_NAME } from "lib/constants";
+import Head from "next/head"
 
 function PostFeed() {
   const { posts, isLoading, isError } = useHomePosts();
@@ -25,6 +27,9 @@ export default function HomePage() {
 
   return (
     <>
+      <Head>
+        <title>{SITE_NAME}</title>
+      </Head>
       {/* Header */}
       <Header />
 

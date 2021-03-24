@@ -24,6 +24,8 @@ import { useDashboardPosts, useDashboardStats } from "lib/useHomePosts";
 import NextLink from "next/link";
 import { signIn, useSession } from "next-auth/client";
 import React from "react";
+import { SITE_NAME } from "lib/constants";
+import Head from "next/head";
 
 const DashboardPage = () => {
   // Authentication
@@ -165,6 +167,9 @@ const DashboardPage = () => {
   }
   return (
     <>
+      <Head>
+        <title>Dashboard - {SITE_NAME}</title>
+      </Head>
       <Header />
       <Spacer y={2} />
       <Grid.Container justify={"center"}>

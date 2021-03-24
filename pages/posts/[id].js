@@ -27,7 +27,8 @@ import { getSession, useSession } from "next-auth/client";
 import React, { useState } from "react";
 import { useCommentsByPostId } from "lib/useCommentsByPostId";
 import moment from "moment";
-
+import Head from 'next/head'
+import { SITE_NAME } from "lib/constants";
 
 export async function getServerSideProps({ params, req }) {
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
@@ -108,6 +109,9 @@ const PostPage = ({ data }) => {
 
   return (
     <>
+      <Head>
+        <title>{title} - {SITE_NAME}</title>
+      </Head>
       <Header />
       <Page.Body>
         <Grid.Container gap={1.5} justify={"center"}>
