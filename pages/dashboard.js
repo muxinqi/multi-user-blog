@@ -3,21 +3,22 @@ import Footer from "components/Footer";
 import {
   Button,
   ButtonDropdown,
-  Card,
+  Card, Code,
   Col,
   Grid,
-  Image, Link,
-  Loading,
+  Image,
+  Loading, Modal, Popover,
   Row,
   Spacer,
   Table,
   Text,
-  useMediaQuery
+  useMediaQuery, useModal, useToasts
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
-import { useDashboardPosts, useDashboardStats, useHomePosts } from "../lib/useHomePosts";
+import { useDashboardPosts, useDashboardStats } from "../lib/useHomePosts";
 import NextLink from "next/link";
 import { signIn, useSession } from "next-auth/client";
+import React from "react";
 
 const DashboardPage = () => {
   // Authentication
@@ -53,7 +54,66 @@ const DashboardPage = () => {
   };
 
   const moreOperation = (actions, rowData) => {
-    return <Button auto size="mini" icon={<Icon.MoreHorizontal />} />;
+    const [, setToast] = useToasts()
+    const [popoverVisible, setPopoverVisible] = React.useState(false)
+    const popoverChangeHandler = (next) => {
+      setPopoverVisible(next)
+    }
+    const [deletePostLoadingVisible, setDeletePostLoadingVisible] = React.useState(false)
+    const handleDeletePost = () => {
+      setDeletePostLoadingVisible(true)
+      fetch(`/api/posts/${rowData.rowValue.id}`, {
+        method: 'DELETE'
+      }).then(res => {
+        if (res.ok) {
+          setModalVisible(false)
+          actions.remove()
+          setToast({
+            type: "warning",
+            text: "successful delete post"
+          });
+        } else {
+          setToast({
+            type: "error",
+            text: "failed to delete post, please try again."
+          });
+        }
+      }).catch(error => {
+        console.log("failed to delete post, error: ", error);
+      })
+        .finally(() => {
+        setDeletePostLoadingVisible(false)
+      })
+    }
+    const { visible, setVisible: setModalVisible, bindings } = useModal()
+    const content = () => (
+      <>
+        <Popover.Item>
+          <Button auto type="error" ghost iconRight={<Icon.Delete />}
+                  onClick={() => {setPopoverVisible(false);setModalVisible(true);}}>Delete</Button>
+        </Popover.Item>
+        <Popover.Item>
+          <Button auto type="success" ghost iconRight={<Icon.Share />}
+                  onClick={() => setPopoverVisible(false)}>Share</Button>
+        </Popover.Item>
+      </>
+    )
+    return (
+      <>
+      <Popover content={content} placement="left" visible={popoverVisible} onVisibleChange={popoverChangeHandler} >
+        <Button auto size="mini" icon={<Icon.MoreHorizontal />} />
+      </Popover>
+      <Modal {...bindings}>
+        <Modal.Title>Are you sure to delete this article</Modal.Title>
+        <Modal.Content>
+          <p>The deletion operation is <Code>irrevocable</Code> and <Code>permanent</Code>. After the article is deleted, it will be <b>erased from our server</b>, and the article will not be found in the Dashboard.</p>
+        </Modal.Content>
+        <Modal.Action passive loading={deletePostLoadingVisible}
+                      onClick={handleDeletePost}> confirm delete </Modal.Action>
+        <Modal.Action onClick={() => setModalVisible(false)}> not now </Modal.Action>
+      </Modal>
+      </>
+    );
   };
 
   // Dashboard posts table data
