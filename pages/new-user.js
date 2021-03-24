@@ -1,6 +1,6 @@
-import { Page, Input, Grid, Button, Col, Row, Spacer, useToasts } from '@geist-ui/react';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { Button, Col, Grid, Input, Page, Row, Spacer, useToasts } from "@geist-ui/react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 function NewUserPage() {
   const router = useRouter()

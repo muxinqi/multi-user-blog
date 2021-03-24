@@ -3,19 +3,24 @@ import Footer from "components/Footer";
 import {
   Button,
   ButtonDropdown,
-  Card, Code,
+  Card,
+  Code,
   Col,
   Grid,
   Image,
-  Loading, Modal, Popover,
+  Loading,
+  Modal,
+  Popover,
   Row,
   Spacer,
   Table,
   Text,
-  useMediaQuery, useModal, useToasts
+  useMediaQuery,
+  useModal,
+  useToasts
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
-import { useDashboardPosts, useDashboardStats } from "../lib/useHomePosts";
+import { useDashboardPosts, useDashboardStats } from "lib/useHomePosts";
 import NextLink from "next/link";
 import { signIn, useSession } from "next-auth/client";
 import React from "react";
@@ -235,8 +240,8 @@ const DashboardPage = () => {
                       <>
                         <Image src={"https://i.loli.net/2021/03/08/vIX8FhKtDNyrziq.png"} />
                         <Row justify={"center"} style={{ marginBottom: "15px" }}>
-                          <Text b size={"large"} style={{ textAlign: "center" }}>This is where you can manage your
-                            posts, but you haven't written anything yet.</Text>
+                          <Text b size={"large"} style={{ textAlign: "center" }}>
+                            {`This is where you can manage your posts, but you haven't written anything yet.`}</Text>
                         </Row>
                         <Row justify={"center"}>
                           <NextLink href={"/new-post"}>

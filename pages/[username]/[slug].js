@@ -3,7 +3,8 @@ import {
   Avatar,
   Button,
   Card,
-  Col, Description,
+  Col,
+  Description,
   Divider,
   Grid,
   Image,
@@ -13,11 +14,13 @@ import {
   Row,
   Spacer,
   Tag,
-  Text, Textarea,
+  Text,
+  Textarea,
   User
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
 import Footer from "components/Footer";
+
 const PostPage = () => {
   const title = 'The ultimate guide for data structures & algorithm interviews'
   const tag1 = '#career'

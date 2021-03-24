@@ -1,5 +1,5 @@
 import prisma from "lib/prisma";
-import {getSession} from "next-auth/client"
+import { getSession } from "next-auth/client";
 import remark from "remark";
 import html from "remark-html";
 
