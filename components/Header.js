@@ -15,10 +15,15 @@ import {
 import * as Icon from "@geist-ui/react-icons"
 import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/client"
+import NextLink from "next/link";
+
+const hash = s => {
+  return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+}
 
 const Header = () => {
   const [ session, loading ] = useSession()
-  const avatarUrl = "https://secure.gravatar.com/avatar/5ffb7ee3f383639957f01622f391815d"
+  const avatarUrl = session.user.image ? session.user.image : 'https://www.gravatar.com/avatar/'+hash(session.user.email+'')
   const [visible, setVisible] = useState(false)
   const changeHandler = (next) => {
     setVisible(next)

@@ -4,6 +4,10 @@ import Image from "next/image";
 import { useCommentsCountByPostId } from "../lib/useHomePosts";
 import NextLink from "next/link"
 
+const hash = s => {
+  return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+}
+
 const PostCard = ({ post }) => {
   const isXS = useMediaQuery('xs')
   const {
@@ -19,7 +23,7 @@ const PostCard = ({ post }) => {
   } = post
   const tagTypeArray = ['default', 'secondary', 'success', 'warning', 'error', 'dark']
   const commentsCount = useCommentsCountByPostId(id)
-
+  const avatarUrl = author.image ? author.image : 'https://www.gravatar.com/avatar/'+hash(author.email+'')
   return (
     <Row style={{ marginBottom: "15px" }}>
       <Card shadow style={{ width: "100%" }}>
@@ -47,7 +51,8 @@ const PostCard = ({ post }) => {
                key={tag.id}>#{tag.name}</Tag>
         ))}
         <Card.Footer>
-          <User src={author.image} name={author.name} />
+          <User src={avatarUrl} name={author.name ? author.name : "User"} >
+          </User>
           <NextLink href={`/posts/${id}`}>
             <Button auto icon={<Icon.Heart />}
                     style={{ marginRight: "2%" }}>{likesCount}&nbsp;{isXS ? "" : "reactions"}</Button>
