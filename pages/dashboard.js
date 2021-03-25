@@ -129,7 +129,8 @@ const DashboardPage = () => {
       return (
         <Row>
           <Icon.Heart size={iconSize} color={iconColor} />&nbsp;{like}&nbsp;&nbsp;
-          <Icon.MessageCircle size={iconSize} color={iconColor} />&nbsp;{like}&nbsp;&nbsp;
+          {/*<Icon.MessageCircle size={iconSize} color={iconColor} />&nbsp;{like}&nbsp;&nbsp;*/}
+          {/* TODO: Add Comment Count */}
           <Icon.Eye size={iconSize} color={iconColor} />&nbsp;{view}&nbsp;&nbsp;
         </Row>
       );
