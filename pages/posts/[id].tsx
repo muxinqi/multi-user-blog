@@ -30,8 +30,15 @@ import moment from "moment";
 import Head from 'next/head'
 import { SITE_NAME } from "lib/constants";
 import { GetServerSideProps } from "next"
+import { Post, Tag as TagType, Comment } from "types/main";
+import { NormalTypes } from "@geist-ui/react/dist/utils/prop-types";
 
 export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
+  if (!params) {
+    return {
+      notFound: true
+    };
+  }
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
   const data = await res.json();
 
@@ -69,7 +76,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
   }
 }
 
-const PostPage = ({ data }) => {
+interface DataType {
+  data: Post
+}
+
+const PostPage = ({ data }: DataType) => {
   const {
     id: postId,
     title,
@@ -146,14 +157,15 @@ const PostPage = ({ data }) => {
                 {/* Post Title */}
                 <Text h1>{title}</Text>
                 <Row>
-                {tags.map(tag => (
+                {tags &&
+                  tags.map((tag: TagType) => (
                   <Tag type={"default"}
                        style={{ marginRight: "1%" }} key={tag.id}>#{tag.name}</Tag>
                 ))}
                 </Row>
                 <Spacer y={0.618}/>
                 <Row align={"middle"}>
-                  <User src={author.image} name={author.name} /><Spacer x={0.5} />
+                  <User src={author.image || "https://www.gravatar.com/avatar/"} name={author.name} /><Spacer x={0.5} />
                   <Text type="secondary" small>{ new Date(createdAt).toDateString }</Text><Spacer x={1.5} />
                 </Row>
                 <Divider><Text type="secondary" small>{readTime}</Text></Divider>
@@ -177,7 +189,7 @@ const PostPage = ({ data }) => {
             <Col>
               <Card shadow style={{ width: "100%" }}>
                 <Row align={"middle"}>
-                  <Avatar src={author.image} size="medium" />
+                  <Avatar src={author.image || "https://www.gravatar.com/avatar/"} size="medium" />
                   <Spacer x={0.5} />
                   <Text b size={20}> {author.name} </Text>
                 </Row>
@@ -198,14 +210,18 @@ const PostPage = ({ data }) => {
   )
 }
 
-const Discussion = ({ postId }) => {
+interface PostIdType {
+  postId: number
+}
+
+const Discussion = ({ postId }: PostIdType) => {
   const [session] = useSession();
   const [btnDisable, setBtnDisable] = useState(true);
   const [showSubmitBtn, setShowSubmitBtn] = useState(false);
   const { state, setState, reset, bindings } = useInput("");
   const [, setToast] = useToasts();
 
-  const toast = (type, text) => {
+  const toast = (type: NormalTypes, text: string | React.ReactNode) => {
     setToast({
       type: type,
       text: text
@@ -247,7 +263,7 @@ const Discussion = ({ postId }) => {
     </Row>
   );
 
-  const handleInputChange = e => {
+  const handleInputChange = (e: any) => {
     setState(e.target.value);
     if (e.target.value.length > 0) {
       // display submit button
@@ -265,7 +281,7 @@ const Discussion = ({ postId }) => {
         </Grid>
         <Grid xs={3}>
           {!session && <Avatar text="You" size="medium" />}
-          {session && <Avatar src={session.user.image} size="medium" />}
+          {session && <Avatar src={session.user.image || 'https://www.gravatar.com/avatar/'} size="medium" />}
         </Grid>
         <Grid xs={21}>
           <Col>
@@ -279,10 +295,10 @@ const Discussion = ({ postId }) => {
         {isLoading && <Loading />}
         {isError && <>Something went wrong.</>}
         {comments && <>
-          {comments.map(comment => (
+          {comments.map((comment: Comment) => (
             <>
               <Grid xs={3} style={{ marginTop: "25px" }}>
-                <Avatar src={comment.author.image} size="medium" />
+                <Avatar src={comment.author.image || "https://www.gravatar.com/avatar/"} size="medium" />
               </Grid>
               <Grid xs={21} style={{ marginTop: "25px" }}>
                 <Card style={{ width: "100%" }}>

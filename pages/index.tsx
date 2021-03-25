@@ -15,7 +15,8 @@ function PostFeed() {
   if (isLoading) return <Loading>Loading</Loading>;
   return (
     <>
-      {posts.map(post => (
+      {posts &&
+        posts.map(post => (
         <PostCard post={post} key={post.id} />
       ))}
     </>

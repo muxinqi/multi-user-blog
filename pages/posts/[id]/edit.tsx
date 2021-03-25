@@ -23,8 +23,14 @@ import "react-mde/lib/styles/css/react-mde-editor.css";
 import Head from 'next/head'
 import { SITE_NAME } from "lib/constants";
 import { GetServerSideProps } from 'next'
+import { Post } from "types/main";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  if (!params) {
+    return {
+      notFound: true
+    };
+  }
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
   const data = await res.json();
 
@@ -42,7 +48,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 }
 
-const EditPostPage = ({ data, postId }) => {
+interface PropsType {
+  data: Post,
+  postId: number
+}
+
+const EditPostPage = ({ data, postId }: PropsType) => {
   const tagOptions = [
     { label: "London", value: "london" },
     { label: "Sydney", value: "sydney" },
@@ -78,7 +89,7 @@ const EditPostPage = ({ data, postId }) => {
     return true;
   }
 
-  const handleSubmit = async (published, e) => {
+  const handleSubmit = async (published: boolean, e: any) => {
     if (!inputValidate()) {
       return;
     }

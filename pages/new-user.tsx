@@ -27,7 +27,7 @@ function NewUserPage() {
     }
   }
 
-  const handler = async e => {
+  const handler = async (e: any) => {
     setValue(e.target.value)
     const res = await fetch(
       `/api/users/${e.target.value}?checkAvailable=true`, {

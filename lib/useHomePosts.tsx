@@ -1,9 +1,17 @@
 import useSWR from "swr";
+import { Post } from "types/main";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+const fetcher = async (
+  input: RequestInfo,
+  init: RequestInit,
+  ...args: any[]
+) => {
+  const res = await fetch(input, init);
+  return res.json();
+};
 
 export const useHomePosts = () => {
-  const { data, error } = useSWR("/api/home", fetcher);
+  const { data, error } = useSWR<Post[]>("/api/home", fetcher);
   return {
     posts: data,
     isLoading: !error && !data,
@@ -12,7 +20,7 @@ export const useHomePosts = () => {
 };
 
 export function useDashboardPosts() {
-  const { data, error } = useSWR("/api/dashboard?posts=true", fetcher);
+  const { data, error } = useSWR<Post[]>("/api/dashboard?posts=true", fetcher);
   return {
     posts: data,
     isLoading: !error && !data,
@@ -30,10 +38,10 @@ export function useDashboardStats() {
 }
 
 export const useCommentsCountByPostId = postId => {
-  const { data, error } = useSWR(`/api/posts/${postId}/comments?count=true`, fetcher)
+  const { data, error } = useSWR<number>(`/api/posts/${postId}/comments?count=true`, fetcher);
   return {
     data,
     isLoading: !error && !data,
     isError: error
-  }
-}
+  };
+};

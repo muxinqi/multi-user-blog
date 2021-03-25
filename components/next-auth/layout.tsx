@@ -1,7 +1,13 @@
 import Header from 'components/next-auth/header'
 import Footer from 'components/next-auth/footer'
+import React from "react";
 
-export default function Layout ({children}) {
+
+interface IProps {
+  children: React.ReactNode
+}
+
+export default function Layout ({children}: IProps) {
   return (
     <>
       <Header/>

@@ -26,15 +26,16 @@ import { signIn, useSession } from "next-auth/client";
 import React from "react";
 import { SITE_NAME } from "lib/constants";
 import Head from "next/head";
+import { TableCellActions } from "@geist-ui/react/dist/table/table-cell";
 
 const DashboardPage = () => {
   // Authentication
   const [session, loading] = useSession();
   if (loading) return null;
   if (!loading && !session) {
-    const handleClick = (e) => {
+    const handleClick = (e: any) => {
       e.preventDefault();
-      signIn(null, {
+      signIn(undefined, {
         callbackUrl: `${process.env.BASE_URL}/dashboard`
       })
     }
@@ -57,16 +58,16 @@ const DashboardPage = () => {
   const stats = useDashboardStats();
   const posts = useDashboardPosts();
 
-  const editOperation = (actions, rowData) => {
+  const editOperation = (actions: TableCellActions, rowData: any) => {
     return <NextLink href={`/posts/${rowData.rowValue.id}/edit`}>
       <Button auto size="mini" type="success" ghost>Edit</Button>
     </NextLink>;
   };
 
-  const moreOperation = (actions, rowData) => {
+  const moreOperation = (actions: TableCellActions, rowData: any) => {
     const [, setToast] = useToasts()
     const [popoverVisible, setPopoverVisible] = React.useState(false)
-    const popoverChangeHandler = (next) => {
+    const popoverChangeHandler = (next: boolean) => {
       setPopoverVisible(next)
     }
     const [deletePostLoadingVisible, setDeletePostLoadingVisible] = React.useState(false)
@@ -127,9 +128,9 @@ const DashboardPage = () => {
   };
 
   // Dashboard posts table data
-  let data = [];
+  let data: any = [];
   if (posts.posts) {
-    const postCountData = (like, view) => {
+    const postCountData = (like: number, view: number) => {
       const iconSize = 20;
       const iconColor = "grey";
       return (

@@ -60,7 +60,7 @@ const NewPostPage = () => {
     return true;
   }
 
-  const handleSubmit = async (published, e) => {
+  const handleSubmit = async (published: boolean, e: any) => {
     if (!inputValidate()) {
       return;
     }
