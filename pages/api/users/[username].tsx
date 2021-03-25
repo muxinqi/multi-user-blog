@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 // GET /api/users/:username
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
-  const username = req.query.username
+  const username = Array.isArray(req.query.username) ? req.query.username[0] : req.query.username
   const checkAvailable = Boolean(req.query.checkAvailable)
 
   if (checkAvailable) {
@@ -37,7 +37,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 // PATCH /api/users/:username
 // set username
 async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
-  const username = req.query.username
+  const username = Array.isArray(req.query.username) ? req.query.username[0] : req.query.username
   const session = await getSession({ req })
   // if user not logged in
   if (!session) {

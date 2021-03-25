@@ -23,19 +23,13 @@ async function handleDELETE(session, commentId, res: NextApiResponse) {
     res.status(401).end('Unauthorized')
   }
   // check if user wants to delete others' comment
-  const commentAuthorId = await prisma.user.findUnique({
-    where: {
-      Comment: {
-        id: commentId,
-      },
-    },
-  }).id
-  const currentUserId = await prisma.user.findUnique({
-    where: {
-      email: session.user.email,
-    },
-  }).id
-  if (commentAuthorId !== currentUserId) {
+  const commentAuthor = await prisma.comment
+    .findUnique({ where: { id: Number(commentId) }, })
+    .author()
+  const currentUser = await prisma.user
+    .findUnique({ where: { email: session.user.email } })
+
+  if (!commentAuthor || !currentUser || commentAuthor.id !== currentUser.id) {
     res.status(403).end('Forbidden')
   }
   // delete comment

@@ -92,22 +92,18 @@ async function handlePUT(session, postId, req: NextApiRequest, res: NextApiRespo
   // Guest
   if (!session) {
     res.status(401).end('Unauthorized')
+    return
   }
   // check if user wants to update others' post
-  const postAuthorId = await prisma.user.findUnique({
-    where: {
-      Post: {
-        id: postId,
-      },
-    },
-  }).id
-  const currentUserId = await prisma.user.findUnique({
-    where: {
-      email: session.user.email
-    },
-  }).id
-  if (postAuthorId !== currentUserId) {
+  const postAuthor = await prisma.post
+    .findUnique({ where: { id: Number(postId) } })
+    .author()
+  const user = await prisma.user
+    .findUnique({ where: { email: session.user.email } })
+
+  if (!postAuthor || !user || postAuthor.id !== user.id) {
     res.status(403).end('Forbidden')
+    return
   }
   // update post
   const {id, title, slug, coverImage, rawContent, tags, published} = req.body
