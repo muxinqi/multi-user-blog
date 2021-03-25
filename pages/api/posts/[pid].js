@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       break
     default:
       res.setHeader('Allow', ['GET', 'DELETE'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      res.status(405).end(`Method ${req.method} Not Allowed`)
   }
 }
 
@@ -67,22 +67,26 @@ async function handleDELETE(session, postId, res) {
     }
   })
   if (!post) {
-    res.status(404).send()
+    res.status(404).send("Not Found")
     return
   }
   const userIsNotAuthor = user.id !== post.author.id
   if (userIsNotAuthor) {
-    res.status(403).send()
+    res.status(403).send("Forbidden")
     return
   }
-
-  const deletedPost = await prisma.post.delete({
+  const deleteComments = prisma.comment.deleteMany({
+    where: { postId: Number(postId) }
+  })
+  const deletePost = prisma.post.delete({
     where: { id: Number(postId) },
   })
-  if (!deletedPost) {
-    res.status(500).send()
+
+  const transaction = await prisma.$transaction([deleteComments, deletePost])
+  if (!transaction) {
+    res.status(500).send("Internal Error")
   } else {
-    res.status(204).send()
+    res.status(204).send(null)
   }
 }
 
