@@ -35,7 +35,7 @@ async function handleGET(postId, res) {
     },
   })
   if (!post) {
-    res.status(404)
+    res.status(404).end("Not Found")
   } else {
     res.status(200).json(post)
   }
