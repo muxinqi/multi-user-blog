@@ -1,5 +1,5 @@
-import {Card, Col, Divider, Grid, Link, Page, Row, Spacer, Text} from "@geist-ui/react";
-import * as Icon from '@geist-ui/react-icons';
+import { Col, Divider, Grid, Link, Row, Spacer, Text } from "@geist-ui/react";
+import * as Icon from "@geist-ui/react-icons";
 
 const Footer = () => {
   return (
@@ -8,9 +8,9 @@ const Footer = () => {
       <Divider />
       <Spacer y={2} />
       <Row>
-        <Col style={{ paddingLeft: '4%', paddingRight: '4%' }}>
+        <Col style={{ paddingLeft: "4%", paddingRight: "4%" }}>
           {/* First Line - Home, Archive, Tag, FAQ */}
-          <Grid.Container gap={.5} justify="center">
+          <Grid.Container gap={0.5} justify="center">
             <Grid xs={5} sm={3} md={2} lg={1.5}>
               <Link href={"/"}>
                 <Text>Home</Text>
@@ -49,7 +49,7 @@ const Footer = () => {
           </Grid.Container>
 
           {/* Second Line - About, Privacy Policy, Terms of use, Contact */}
-          <Grid.Container gap={.5} justify="center" >
+          <Grid.Container gap={0.5} justify="center">
             <Grid xs={8} sm={4.5} md={3} lg={2.5}>
               <Link href={"/privacy"}>
                 <Text>Privacy Policy</Text>
@@ -70,7 +70,7 @@ const Footer = () => {
           <Spacer y={0.5} />
 
           {/* Third Line - Twitter, Facebook, Github, Instagram, Telegram */}
-          <Grid.Container gap={.5} justify="center" >
+          <Grid.Container gap={0.5} justify="center">
             <Grid xs={3.5} sm={3} md={2} lg={1}>
               <Link href={"/twitter"}>
                 <Icon.Twitter />
@@ -100,24 +100,34 @@ const Footer = () => {
         </Col>
       </Row>
       <Spacer y={1} />
-      <Divider style={{ width: '20%', margin: 'auto' }} />
+      <Divider style={{ width: "20%", margin: "auto" }} />
       <Spacer y={1} />
       <Row>
-        <Col style={{ width: '100%', paddingLeft: '6%', paddingRight: '6%' }}>
+        <Col style={{ width: "100%", paddingLeft: "6%", paddingRight: "6%" }}>
           <Row justify={"center"}>
-            <Text p><Text b>M Blog</Text> - A platform where you can host your daily life and inspiration. With fast global access and a high SLA guarantee.</Text>
+            <Text p>
+              <Text b>M Blog</Text> - A platform where you can host your daily
+              life and inspiration. With fast global access and a high SLA
+              guarantee.
+            </Text>
           </Row>
         </Col>
       </Row>
       <Row>
-        <Col style={{ width: '100%', paddingLeft: '6%', paddingRight: '6%' }}>
+        <Col style={{ width: "100%", paddingLeft: "6%", paddingRight: "6%" }}>
           <Row justify={"center"}>
-            <Text p>Made with love and <Link href={"https://nextjs.org/?ref=muxinqi.com"}><Text b>Next.JS</Text></Link>. Blog Platform &copy; {new Date().getFullYear()} </Text>
+            <Text p>
+              Made with love and{" "}
+              <Link href={"https://nextjs.org/?ref=muxinqi.com"}>
+                <Text b>Next.JS</Text>
+              </Link>
+              . Blog Platform &copy; {new Date().getFullYear()}{" "}
+            </Text>
           </Row>
         </Col>
       </Row>
       <Spacer y={2} />
     </div>
-  )
-}
-export default Footer
+  );
+};
+export default Footer;

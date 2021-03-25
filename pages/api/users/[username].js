@@ -2,58 +2,61 @@ import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 
 export default async function handler(req, res) {
-
   switch (req.method) {
-    case 'GET':
-      await handleGET(req, res)
-      break
-    case 'PATCH':
-      await handlePATCH(req, res)
-      break
+    case "GET":
+      await handleGET(req, res);
+      break;
+    case "PATCH":
+      await handlePATCH(req, res);
+      break;
     default:
-      res.setHeader('Allow', ['GET', 'PATCH'])
-      res.status(405).end(`Method ${req.method} Not Allowed`)
+      res.setHeader("Allow", ["GET", "PATCH"]);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 
 // GET /api/users/:username
 async function handleGET(req, res) {
-  const username = Array.isArray(req.query.username) ? req.query.username[0] : req.query.username
-  const checkAvailable = Boolean(req.query.checkAvailable)
+  const username = Array.isArray(req.query.username)
+    ? req.query.username[0]
+    : req.query.username;
+  const checkAvailable = Boolean(req.query.checkAvailable);
 
   if (checkAvailable) {
     const userCount = await prisma.user.count({
-      where: { username: username }
-    })
-    res.status(200).json({ "isAvailable": userCount === 0 })
+      where: { username: username },
+    });
+    res.status(200).json({ isAvailable: userCount === 0 });
   } else {
     const user = await prisma.user.findUnique({
-      where: { username: username }
-    })
-    res.status(200).json(user)
+      where: { username: username },
+    });
+    res.status(200).json(user);
   }
 }
 // PATCH /api/users/:username
 // set username
 async function handlePATCH(req, res) {
-  const username = Array.isArray(req.query.username) ? req.query.username[0] : req.query.username
-  const session = await getSession({ req })
+  const username = Array.isArray(req.query.username)
+    ? req.query.username[0]
+    : req.query.username;
+  const session = await getSession({ req });
   // if user not logged in
   if (!session) {
-    res.status(401).json('Unauthorized')
+    res.status(401).json("Unauthorized");
   }
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { username: true }
-  })
+    select: { username: true },
+  });
   // if user don't have username
   if (!user.username) {
     const updateUser = await prisma.user.update({
       where: { email: session.user.email },
-      data: { username: username }
-    })
-    res.status(200).json(updateUser)
+      data: { username: username },
+    });
+    res.status(200).json(updateUser);
   } else {
-    res.status(403)
+    res.status(403);
   }
 }

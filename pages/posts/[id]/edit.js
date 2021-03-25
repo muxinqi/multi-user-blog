@@ -10,7 +10,7 @@ import {
   Row,
   Spacer,
   Text,
-  useToasts
+  useToasts,
 } from "@geist-ui/react";
 import React from "react";
 import { useRouter } from "next/router";
@@ -20,7 +20,7 @@ import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde.css";
 import "react-mde/lib/styles/css/react-mde-toolbar.css";
 import "react-mde/lib/styles/css/react-mde-editor.css";
-import Head from 'next/head'
+import Head from "next/head";
 import { SITE_NAME } from "lib/constants";
 
 export async function getServerSideProps({ params }) {
@@ -29,23 +29,23 @@ export async function getServerSideProps({ params }) {
 
   if (!data) {
     return {
-      notFound: true
+      notFound: true,
     };
   }
 
   return {
     props: {
       data,
-      postId: params.id
-    }
-  }
+      postId: params.id,
+    },
+  };
 }
 
 const EditPostPage = ({ data, postId }) => {
   const tagOptions = [
     { label: "London", value: "london" },
     { label: "Sydney", value: "sydney" },
-    { label: "Shanghai", value: "shanghai" }
+    { label: "Shanghai", value: "shanghai" },
   ];
   const [title, setTitle] = React.useState(data.title);
   const [coverImage, setCoverImage] = React.useState(data.coverImage);
@@ -60,17 +60,17 @@ const EditPostPage = ({ data, postId }) => {
   // const { visible, setVisible, bindings } = useModal()
 
   function inputValidate() {
-    if (typeof (title) == "undefined" || !title || title.length === 0) {
+    if (typeof title == "undefined" || !title || title.length === 0) {
       setToast({
         type: "warning",
-        text: "Title cannot bt empty"
+        text: "Title cannot bt empty",
       });
       return false;
     }
-    if (typeof (slug) == "undefined" || !slug || slug.length === 0) {
+    if (typeof slug == "undefined" || !slug || slug.length === 0) {
       setToast({
         type: "warning",
-        text: "Slug cannot be empty"
+        text: "Slug cannot be empty",
       });
       return false;
     }
@@ -87,52 +87,53 @@ const EditPostPage = ({ data, postId }) => {
       coverImage: coverImage,
       slug: slug,
       rawContent: value,
-      tags: tags ? []: null,
-      published: published
+      tags: tags ? [] : null,
+      published: published,
     };
     await fetch(url, {
       method: "PUT",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json"
-      }
-    }).then(res => {
-      if (res.ok && res.status === 200) {
-        setToast({
-          type: "success",
-          text: "Post sent successfully"
-        });
-        router.push("/dashboard");
-      } else {
-        setToast({
-          type: "warning",
-          text: "Failed to send post."
-        });
-        console.log("failed to send post: ", res.status);
-      }
-    }).catch(error => {
-      console.log("error: ", error.message);
-    });
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok && res.status === 200) {
+          setToast({
+            type: "success",
+            text: "Post sent successfully",
+          });
+          router.push("/dashboard");
+        } else {
+          setToast({
+            type: "warning",
+            text: "Failed to send post.",
+          });
+          console.log("failed to send post: ", res.status);
+        }
+      })
+      .catch((error) => {
+        console.log("error: ", error.message);
+      });
   };
 
   function handleImageIconClick() {
     setImageIsLoading(true);
-    fetch("https://source.unsplash.com/random/2100x900")
-      .then((res) => {
-        if (res.ok) {
-          setCoverImage(res.url);
-          setImageIsLoading(false);
-          setToast({
-            type: "success",
-            text: "✅ Randomly get pictures successfully"
-          });
-        }
-      });
+    fetch("https://source.unsplash.com/random/2100x900").then((res) => {
+      if (res.ok) {
+        setCoverImage(res.url);
+        setImageIsLoading(false);
+        setToast({
+          type: "success",
+          text: "✅ Randomly get pictures successfully",
+        });
+      }
+    });
   }
 
   const save = async function* (data) {
     // Promise that waits for "time" milliseconds
-    const wait = function(time) {
+    const wait = function (time) {
       return new Promise((a, r) => {
         setTimeout(() => a(), time);
       });
@@ -159,15 +160,24 @@ const EditPostPage = ({ data, postId }) => {
       </Head>
       {/*<Header />*/}
       <Page.Body>
-        <Grid.Container justify={"center"} style={{ marginTop: "-35px", paddingLeft: "3%", paddingRight: "3%" }}>
+        <Grid.Container
+          justify={"center"}
+          style={{ marginTop: "-35px", paddingLeft: "3%", paddingRight: "3%" }}
+        >
           <Grid xs={24} md={18} lg={16} xl={14}>
             <Col>
               <Row>
-                <Input icon={<Icon.Type />} placeholder={"Title"} width="100%" size={"large"}
-                       value={title} onChange={e => {
-                  setTitle(e.target.value);
-                  setSlug(e.target.value.replace(/\s+/g, "-").toLowerCase());
-                }}>
+                <Input
+                  icon={<Icon.Type />}
+                  placeholder={"Title"}
+                  width="100%"
+                  size={"large"}
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    setSlug(e.target.value.replace(/\s+/g, "-").toLowerCase());
+                  }}
+                >
                   <Text h2>Write a new post</Text>
                 </Input>
               </Row>
@@ -175,10 +185,16 @@ const EditPostPage = ({ data, postId }) => {
                 <Spacer y={0.5} />
               </Row>
               <Row>
-                <Input icon={imageIsLoading ? <Loading /> : <Icon.Image />} placeholder={"Cover Image URL"} width="100%"
-                       size={"large"}
-                       value={coverImage} onChange={e => setCoverImage(e.target.value)}
-                       iconClickable onIconClick={handleImageIconClick}>
+                <Input
+                  icon={imageIsLoading ? <Loading /> : <Icon.Image />}
+                  placeholder={"Cover Image URL"}
+                  width="100%"
+                  size={"large"}
+                  value={coverImage}
+                  onChange={(e) => setCoverImage(e.target.value)}
+                  iconClickable
+                  onIconClick={handleImageIconClick}
+                >
                   {/*TODO: add loading*/}
                 </Input>
               </Row>
@@ -188,13 +204,21 @@ const EditPostPage = ({ data, postId }) => {
               <Row>
                 <Grid.Container gap={0.5}>
                   <Grid xs={24} lg={12}>
-                    <Input width="100%" icon={<Icon.Paperclip />} placeholder={"Your Slug (e.g. hello-world)"}
-                           value={slug} onChange={e => setSlug(e.target.value)}>
-                    </Input>
+                    <Input
+                      width="100%"
+                      icon={<Icon.Paperclip />}
+                      placeholder={"Your Slug (e.g. hello-world)"}
+                      value={slug}
+                      onChange={(e) => setSlug(e.target.value)}
+                    ></Input>
                   </Grid>
                   <Grid xs={24} lg={12}>
-                    <AutoComplete icon={<Icon.Hash />} width="100%" placeholder={"Add Up To 4 Tags..."}
-                                  options={tagOptions} />
+                    <AutoComplete
+                      icon={<Icon.Hash />}
+                      width="100%"
+                      placeholder={"Add Up To 4 Tags..."}
+                      options={tagOptions}
+                    />
                   </Grid>
                 </Grid.Container>
               </Row>
@@ -203,7 +227,10 @@ const EditPostPage = ({ data, postId }) => {
               </Row>
               <Row>
                 <Card style={{ width: "100%", height: "60vh" }}>
-                  <div className="container" style={{ width: "108%", margin: "-22px" }}>
+                  <div
+                    className="container"
+                    style={{ width: "108%", margin: "-22px" }}
+                  >
                     <ReactMde
                       value={value}
                       onChange={setValue}
@@ -214,11 +241,11 @@ const EditPostPage = ({ data, postId }) => {
                       }
                       childProps={{
                         writeButton: {
-                          tabIndex: -1
-                        }
+                          tabIndex: -1,
+                        },
                       }}
                       paste={{
-                        saveImage: save
+                        saveImage: save,
                       }}
                     />
                   </div>
@@ -230,12 +257,23 @@ const EditPostPage = ({ data, postId }) => {
               <Row>
                 <Grid.Container gap={0.5}>
                   <Grid xs={24} sm={12} md={6} lg={4}>
-                    <Button auto type="success-light" style={{ width: "100%" }}
-                            onClick={(e) => handleSubmit(true, e)}><Text b>update</Text></Button>
+                    <Button
+                      auto
+                      type="success-light"
+                      style={{ width: "100%" }}
+                      onClick={(e) => handleSubmit(true, e)}
+                    >
+                      <Text b>update</Text>
+                    </Button>
                   </Grid>
                   <Grid xs={24} sm={12} md={6} lg={4}>
-                    <Button auto style={{ width: "100%" }}
-                            onClick={(e) => handleSubmit(false, e)}><Text b>Save Draft</Text></Button>
+                    <Button
+                      auto
+                      style={{ width: "100%" }}
+                      onClick={(e) => handleSubmit(false, e)}
+                    >
+                      <Text b>Save Draft</Text>
+                    </Button>
                   </Grid>
                 </Grid.Container>
               </Row>
@@ -244,6 +282,6 @@ const EditPostPage = ({ data, postId }) => {
         </Grid.Container>
       </Page.Body>
     </>
-  )
-}
-export default EditPostPage
+  );
+};
+export default EditPostPage;

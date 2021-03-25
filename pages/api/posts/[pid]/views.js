@@ -1,15 +1,15 @@
 import prisma from "lib/prisma";
 
 export default async function handler(req, res) {
-  const postId = req.query.pid
+  const postId = req.query.pid;
 
   switch (req.method) {
-    case 'PATCH':
-      await handlePATCH(postId, res)
-      break
+    case "PATCH":
+      await handlePATCH(postId, res);
+      break;
     default:
-      res.setHeader('Allow', ['PATCH'])
-      res.status(405).end(`Method ${req.method} Not Allowed`)
+      res.setHeader("Allow", ["PATCH"]);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 
@@ -19,13 +19,13 @@ const handlePATCH = async (postId, res) => {
     where: { id: Number(postId) },
     data: {
       viewsCount: {
-        increment: 1
-      }
-    }
-  })
+        increment: 1,
+      },
+    },
+  });
   if (!result) {
-    res.status(500).end('Internal Error')
+    res.status(500).end("Internal Error");
   } else {
-    res.status(200).json(result)
+    res.status(200).json(result);
   }
-}
+};

@@ -7,10 +7,10 @@ import OpenSourceHint from "components/OpenSourceHint";
 import Footer from "components/Footer";
 
 function LoginPage() {
-  const router = useRouter()
-  const query = router.query
-  const isSigningUp = query['state'] === 'new-user'
-  const isLoggingIn = !isSigningUp
+  const router = useRouter();
+  const query = router.query;
+  const isSigningUp = query["state"] === "new-user";
+  const isLoggingIn = !isSigningUp;
   return (
     <>
       <Header />
@@ -21,7 +21,7 @@ function LoginPage() {
             <Col>
               <Card shadow>
                 <ThirdPartyAuth isLoggingIn={isLoggingIn} />
-                <Spacer y={.5}/>
+                <Spacer y={0.5} />
                 <AccountInput isLoggingIn={isLoggingIn} />
               </Card>
               <OpenSourceHint />
@@ -31,7 +31,7 @@ function LoginPage() {
       </Page.Body>
       <Footer />
     </>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

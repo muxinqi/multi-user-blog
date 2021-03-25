@@ -4,7 +4,6 @@ import remark from "remark";
 import html from "remark-html";
 
 export default async function handler(req, res) {
-
   switch (req.method) {
     case "GET":
       await handleGET(res);
@@ -13,8 +12,8 @@ export default async function handler(req, res) {
       await handlePOST(req, res);
       break;
     default:
-      res.setHeader('Allow', ['GET', 'POST'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      res.setHeader("Allow", ["GET", "POST"]);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 
@@ -25,10 +24,10 @@ async function handleGET(res) {
       published: true,
     },
     include: {
-      author: true
+      author: true,
     },
-  })
-  res.json(posts)
+  });
+  res.json(posts);
 }
 
 // POST /api/posts
@@ -38,16 +37,8 @@ async function handlePOST(req, res) {
   if (!session) {
     res.status(401).end("Unauthorized");
   }
-  const {
-    title,
-    coverImage,
-    slug,
-    rawContent,
-    published
-  } = req.body;
-  const renderedContent = await remark()
-    .use(html)
-    .process(rawContent);
+  const { title, coverImage, slug, rawContent, published } = req.body;
+  const renderedContent = await remark().use(html).process(rawContent);
   const result = await prisma.post.create({
     data: {
       title: title,
@@ -58,10 +49,10 @@ async function handlePOST(req, res) {
       published: published,
       author: {
         connect: {
-          email: session.user.email
-        }
-      }
-    }
+          email: session.user.email,
+        },
+      },
+    },
   });
   res.status(201).json(result);
 }

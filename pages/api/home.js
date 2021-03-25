@@ -1,10 +1,10 @@
 import prisma from "lib/prisma";
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', ['GET'])
-    res.status(405).end(`Method ${req.method} Not Allowed`)
-    return
+  if (req.method !== "GET") {
+    res.setHeader("Allow", ["GET"]);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return;
   }
   // handle GET request
   const data = await prisma.post.findMany({
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       published: true,
     },
     orderBy: {
-      createdAt: 'desc'
+      createdAt: "desc",
     },
     select: {
       id: true,
@@ -27,14 +27,14 @@ export default async function handler(req, res) {
         select: {
           id: true,
           name: true,
-          image: true
-        }
-      }
-    }
-  })
+          image: true,
+        },
+      },
+    },
+  });
   if (!data) {
-    res.status(404)
+    res.status(404);
   } else {
-    res.status(200).json(data)
+    res.status(200).json(data);
   }
 }

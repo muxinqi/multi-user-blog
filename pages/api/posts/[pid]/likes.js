@@ -2,38 +2,37 @@ import prisma from "lib/prisma";
 import { getSession } from "next-auth/client";
 
 export default async function handler(req, res) {
-
   switch (req.method) {
-    case 'PATCH':
-      await handlePATCH(req, res)
-      break
+    case "PATCH":
+      await handlePATCH(req, res);
+      break;
     default:
-      res.setHeader('Allow', ['PATCH'])
-      res.status(405).end(`Method ${req.method} Not Allowed`)
+      res.setHeader("Allow", ["PATCH"]);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
 
 // PATCH /api/posts/:pid/likes
 const handlePATCH = async (req, res) => {
-  const session = await getSession({ req })
+  const session = await getSession({ req });
   // if not logged in
   if (!session) {
-    res.status(401).end('Unauthorized')
-    return
+    res.status(401).end("Unauthorized");
+    return;
   }
-  const postId = req.query.pid
+  const postId = req.query.pid;
   const result = await prisma.post.update({
     where: { id: Number(postId) },
     data: {
       likesCount: {
-        increment: 1
-      }
-    }
-  })
+        increment: 1,
+      },
+    },
+  });
   if (!result) {
-    res.status(500).end('Internal Error')
+    res.status(500).end("Internal Error");
   } else {
-    res.status(200).json(result)
+    res.status(200).json(result);
   }
 
   // // check if user has liked post
@@ -56,4 +55,4 @@ const handlePATCH = async (req, res) => {
   //   where: { id: Number(postId) },
   //
   // })
-}
+};
