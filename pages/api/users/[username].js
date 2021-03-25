@@ -12,20 +12,20 @@ export default async function handler(req, res) {
       break
     default:
       res.setHeader('Allow', ['GET', 'PATCH'])
-      res.status(405).end(`Method ${method} Not Allowed`)
+      res.status(405).end(`Method ${req.method} Not Allowed`)
   }
 }
 
 // GET /api/users/:username
 async function handleGET(req, res) {
-  const username = req.query.username
+  const username = Array.isArray(req.query.username) ? req.query.username[0] : req.query.username
   const checkAvailable = Boolean(req.query.checkAvailable)
 
   if (checkAvailable) {
     const userCount = await prisma.user.count({
       where: { username: username }
     })
-    res.status(200).json({ "isAvailable": userCount == 0 })
+    res.status(200).json({ "isAvailable": userCount === 0 })
   } else {
     const user = await prisma.user.findUnique({
       where: { username: username }
@@ -36,7 +36,7 @@ async function handleGET(req, res) {
 // PATCH /api/users/:username
 // set username
 async function handlePATCH(req, res) {
-  const username = req.query.username
+  const username = Array.isArray(req.query.username) ? req.query.username[0] : req.query.username
   const session = await getSession({ req })
   // if user not logged in
   if (!session) {
