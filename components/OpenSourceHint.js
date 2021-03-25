@@ -9,7 +9,7 @@ const OpenSourceHint = () => {
           <Text>Open Source <Icon.HeartFill color="red"/> Free Forever</Text>
         </Row>
         <Row justify={"center"} >
-          <Text>We strive for transparency and don't collect excess data.</Text>
+          <Text>{`We strive for transparency and don't collect excess data.`}</Text>
         </Row>
       </Col>
     </>
