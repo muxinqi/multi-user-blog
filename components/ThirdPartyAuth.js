@@ -8,6 +8,7 @@ import {
   Text,
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
+import PropTypes from "prop-types";
 
 const GoSignInHint = ({ isLoggingIn }) => {
   const loggingInBool = isLoggingIn === true;
@@ -32,7 +33,9 @@ const GoSignInHint = ({ isLoggingIn }) => {
     );
   }
 };
-
+ThirdPartyAuth.propTypes = {
+  isLoggingIn: PropTypes.bool.isRequired,
+};
 const ThirdPartyAuth = ({ isLoggingIn }) => {
   const API_BASE_URL = "http://lcoalhost:8080";
   const OAUTH2_REDIRECT_URI = `${process.env.BASE_URL}/oauth2/redirect`;

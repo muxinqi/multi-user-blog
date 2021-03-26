@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useCommentsCountByPostId } from "../lib/useHomePosts";
 import NextLink from "next/link";
 import moment from "moment";
+import PropTypes from "prop-types";
 
 const hash = (s) => {
   return s.split("").reduce(function (a, b) {
@@ -104,4 +105,19 @@ const PostCard = ({ post }) => {
     </Row>
   );
 };
+
+PostCard.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    slug: PropTypes.string,
+    createdAt: PropTypes.string,
+    likesCount: PropTypes.number,
+    viewsCount: PropTypes.number,
+    tags: PropTypes.array,
+    coverImage: PropTypes.string,
+    author: PropTypes.object,
+  }),
+};
+
 export default PostCard;
