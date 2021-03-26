@@ -256,10 +256,10 @@ const DiscussionCard = ({ comment }) => {
   };
   return (
     <>
-      <Grid xs={3} style={{ marginTop: "25px" }}>
+      <Grid xs={5} sm={3.5} md={3} xl={2} style={{ marginTop: "25px" }}>
         <Avatar src={image} size="medium" />
       </Grid>
-      <Grid xs={21} style={{ marginTop: "25px" }}>
+      <Grid xs={19} sm={20.5} md={21} xl={22} style={{ marginTop: "25px" }}>
         <Card style={{ width: "100%" }}>
           <Row>
             <Link href={"/muxinqi"}>
@@ -368,17 +368,17 @@ const Discussion = ({ postId }) => {
 
   return (
     <>
-      <Grid.Container>
+      <Grid.Container justify={"center"}>
         <Grid xs={24} style={{ marginBottom: "15px" }}>
           <Text b size="1.8rem">
             Discussion (3)
           </Text>
         </Grid>
-        <Grid xs={3}>
-          {!session && <Avatar text="You" size="medium" />}
+        <Grid xs={5} sm={3.5} md={3} xl={2}>
+          {!session && <Avatar text="Guest" size="medium" />}
           {session && <Avatar src={session.user.image} size="medium" />}
         </Grid>
-        <Grid xs={21}>
+        <Grid xs={19} sm={20.5} md={21} xl={22}>
           <Col>
             <Row>
               <Textarea

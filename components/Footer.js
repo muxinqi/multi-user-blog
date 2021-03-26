@@ -4,7 +4,7 @@ import * as Icon from "@geist-ui/react-icons";
 const Footer = () => {
   return (
     <div>
-      <Spacer y={2} />
+      <Spacer y={0.5} />
       <Divider />
       <Spacer y={2} />
       <Row>
@@ -57,7 +57,7 @@ const Footer = () => {
             </Grid>
             <Grid xs={8} sm={4.5} md={3} lg={2.5}>
               <Link href={"/tos"}>
-                <Text>Terms of use</Text>
+                <Text>Terms of Use</Text>
               </Link>
             </Grid>
             <Grid xs={4} sm={3} md={2} lg={1.5}>
