@@ -29,6 +29,7 @@ import { useCommentsByPostId } from "lib/useCommentsByPostId";
 import moment from "moment";
 import Head from "next/head";
 import { SITE_NAME } from "lib/constants";
+import PropTypes from "prop-types";
 
 export async function getServerSideProps({ params, req }) {
   const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.id}`);
@@ -68,6 +69,9 @@ export async function getServerSideProps({ params, req }) {
 }
 
 const PostPage = ({ data }) => {
+  PostPage.propTypes = {
+    data: PropTypes.object.isRequired,
+  };
   const {
     id: postId,
     title,
@@ -241,7 +245,62 @@ const PostPage = ({ data }) => {
   );
 };
 
+const DiscussionCard = ({ comment }) => {
+  const {
+    author: { image, name },
+    createdAt,
+    renderedContent,
+  } = comment;
+  DiscussionCard.propTypes = {
+    comment: PropTypes.object.isRequired,
+  };
+  return (
+    <>
+      <Grid xs={3} style={{ marginTop: "25px" }}>
+        <Avatar src={image} size="medium" />
+      </Grid>
+      <Grid xs={21} style={{ marginTop: "25px" }}>
+        <Card style={{ width: "100%" }}>
+          <Row>
+            <Link href={"/muxinqi"}>
+              <Text small b type="secondary">
+                {name}
+              </Text>
+            </Link>
+            <Spacer x={0.5} />
+            <Link href={"/muxinqi"}>
+              <Text
+                small
+                type="secondary"
+                title={new Date(createdAt).toString()}
+              >
+                {moment(createdAt).fromNow()}
+              </Text>
+            </Link>
+            <Button
+              auto
+              size="small"
+              icon={<Icon.MoreHorizontal />}
+              style={{ position: "absolute", right: "0px" }}
+            />
+          </Row>
+
+          {/* Comment Content */}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: renderedContent,
+            }}
+          />
+        </Card>
+      </Grid>
+    </>
+  );
+};
+
 const Discussion = ({ postId }) => {
+  Discussion.propTypes = {
+    postId: PropTypes.number.isRequired,
+  };
   const [session] = useSession();
   const [btnDisable, setBtnDisable] = useState(true);
   const [showSubmitBtn, setShowSubmitBtn] = useState(false);
@@ -335,51 +394,10 @@ const Discussion = ({ postId }) => {
         </Grid>
         {isLoading && <Loading />}
         {isError && <>Something went wrong.</>}
-        {comments && (
-          <>
-            {comments.map((comment) => (
-              <>
-                <Grid xs={3} style={{ marginTop: "25px" }}>
-                  <Avatar src={comment.author.image} size="medium" />
-                </Grid>
-                <Grid xs={21} style={{ marginTop: "25px" }}>
-                  <Card style={{ width: "100%" }}>
-                    <Row>
-                      <Link href={"/muxinqi"}>
-                        <Text small b type="secondary">
-                          {comment.author.name}
-                        </Text>
-                      </Link>
-                      <Spacer x={0.5} />
-                      <Link href={"/muxinqi"}>
-                        <Text
-                          small
-                          type="secondary"
-                          title={new Date(comment.createdAt).toString()}
-                        >
-                          {moment(comment.createdAt).fromNow()}
-                        </Text>
-                      </Link>
-                      <Button
-                        auto
-                        size="small"
-                        icon={<Icon.MoreHorizontal />}
-                        style={{ position: "absolute", right: "0px" }}
-                      />
-                    </Row>
-
-                    {/* Comment Content */}
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: comment.renderedContent,
-                      }}
-                    />
-                  </Card>
-                </Grid>
-              </>
-            ))}
-          </>
-        )}
+        {comments &&
+          comments.map((comment) => (
+            <DiscussionCard comment={comment} key={comment.id} />
+          ))}
       </Grid.Container>
     </>
   );
