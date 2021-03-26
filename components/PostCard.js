@@ -28,10 +28,10 @@ const PostCard = ({ post }) => {
   const {
     id,
     title,
-    slug,
+    // slug,
     createdAt,
     likesCount,
-    viewsCount,
+    // viewsCount,
     tags,
     coverImage,
     author,

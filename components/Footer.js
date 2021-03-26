@@ -103,7 +103,14 @@ const Footer = () => {
       <Divider style={{ width: "20%", margin: "auto" }} />
       <Spacer y={1} />
       <Row>
-        <Col style={{ width: "100%", paddingLeft: "6%", paddingRight: "6%" }}>
+        <Col
+          style={{
+            width: "100%",
+            paddingLeft: "6%",
+            paddingRight: "6%",
+            textAlign: "center",
+          }}
+        >
           <Row justify={"center"}>
             <Text p>
               <Text b>M Blog</Text> - A platform where you can host your daily
