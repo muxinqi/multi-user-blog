@@ -14,21 +14,45 @@ import * as Icon from "@geist-ui/react-icons";
 import PostCard from "components/PostCard";
 import Header from "components/Header";
 import Footer from "components/Footer";
-import { useHomePosts } from "lib/useHomePosts";
 import { SITE_NAME } from "lib/constants";
 import Head from "next/head";
 import { signIn, useSession } from "next-auth/client";
 import NextLink from "next/link";
+import { useHomePosts } from "../lib/useHomePosts";
 
 function PostFeed() {
-  const { posts, isLoading, isError } = useHomePosts();
+  const {
+    posts,
+    isLoading,
+    isError,
+    isLoadingMore,
+    isReachingEnd,
+    size,
+    setSize,
+  } = useHomePosts();
+
   if (isError) return <h1>Something went wrong!</h1>;
   if (isLoading) return <Loading>Loading</Loading>;
+
   return (
     <>
       {posts.map((post) => (
         <PostCard post={post} key={post.id} />
       ))}
+      <Button
+        auto
+        type="success"
+        ghost
+        disabled={isLoadingMore || isReachingEnd}
+        onClick={() => setSize(size + 1)}
+        style={{ display: "block", margin: "0 auto" }}
+      >
+        {isLoadingMore
+          ? "loading..."
+          : isReachingEnd
+          ? "no more posts"
+          : "load more"}
+      </Button>
     </>
   );
 }
