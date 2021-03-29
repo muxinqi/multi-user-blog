@@ -25,12 +25,179 @@ const hash = (s) => {
 };
 
 const Header = () => {
+  const isMobile = !useMediaQuery("md", { match: "up" });
+  return <>{isMobile ? <Mobile /> : <PC />}</>;
+};
+
+// Header for Large Screen (width >= 768)
+const PC = () => {
+  const [session, loading] = useSession();
+  return (
+    <Page.Header>
+      <Card shadow style={{ width: "100%" }}>
+        <Grid.Container justify={"center"}>
+          <Grid md={14} xl={14}>
+            {/* Blog Logo */}
+            <NextLink href={"/"}>
+              <Button auto type="secondary-light">
+                <Text h3> Blog </Text>
+              </Button>
+            </NextLink>
+
+            <Spacer x={0.5} />
+
+            {/* Search Bar */}
+            <div style={{ width: "450px", maxWidth: "100%" }}>
+              <Input placeholder="Search" width="100%" />
+            </div>
+          </Grid>
+
+          <Grid md={10} xl={7} justify={"flex-end"}>
+            {session ? (
+              // logged in
+              <>
+                <NextLink href={"/new-post"}>
+                  <Button size={"medium"} auto type="success-light">
+                    <Text b> Write a post </Text>
+                  </Button>
+                </NextLink>
+
+                <Spacer x={0.5} />
+
+                {/* Avatar Popover */}
+                <AvatarPopover />
+              </>
+            ) : (
+              // guest
+              <>
+                {/* Login Button */}
+                <Button size={"medium"} auto onClick={() => signIn()}>
+                  <Text b> Log in </Text>
+                </Button>
+
+                <Spacer x={0.5} />
+
+                {/* Create Account Button */}
+                <Button
+                  size={"medium"}
+                  auto
+                  type="success-light"
+                  onClick={() => signIn()}
+                >
+                  <Text b> Create account </Text>
+                </Button>
+              </>
+            )}
+          </Grid>
+        </Grid.Container>
+      </Card>
+    </Page.Header>
+  );
+};
+
+// Header for Mobile Screen (width < 768)
+const Mobile = () => {
+  const [session, loading] = useSession();
+  return (
+    <Page.Header>
+      <Card shadow style={{ width: "100%" }}>
+        <Grid.Container
+          style={{
+            marginTop: "-15px",
+            marginBottom: "-15px",
+          }}
+        >
+          {/* Left Side */}
+          <Grid xs={10} md={10}>
+            {/* More Option Button */}
+            <NextLink href={"/"}>
+              <Button size={"small"} auto icon={<Icon.Menu />} />
+            </NextLink>
+
+            <Spacer x={0.5} />
+
+            {/* Home Button */}
+            <NextLink href={"/"}>
+              <Button
+                auto
+                size={"small"}
+                icon={<Icon.Home />}
+                type="secondary-light"
+              />
+            </NextLink>
+          </Grid>
+
+          {/* Right Side */}
+          <Grid xs={14} md={14} justify={"flex-end"}>
+            {session ? (
+              // logged in
+              <>
+                {/* Search Button */}
+                <Button size={"small"} auto icon={<Icon.Search />} />
+
+                <Spacer x={0.5} />
+
+                {/* Write post  button */}
+                <NextLink href={"/new-post"}>
+                  <Button size={"small"} auto type="success-light">
+                    <Text b> Write a post </Text>
+                  </Button>
+                </NextLink>
+
+                <Spacer x={0.5} />
+
+                {/* Avatar Popover */}
+                <AvatarPopover />
+              </>
+            ) : (
+              // guest
+              <>
+                {/* Search Button */}
+                <Button size={"small"} auto icon={<Icon.Search />} />
+
+                <Spacer x={0.5} />
+
+                {/* Create Account Button */}
+                <Button
+                  size={"small"}
+                  auto
+                  type="success-light"
+                  onClick={() => signIn()}
+                >
+                  <Text b> Create account </Text>
+                </Button>
+              </>
+            )}
+          </Grid>
+        </Grid.Container>
+      </Card>
+    </Page.Header>
+  );
+};
+
+const MyAvatar = () => {
+  const [session, loading] = useSession();
+  const isMobile = !useMediaQuery("md", { match: "up" });
+  const size = isMobile ? 32 : 40;
+  if (loading) return <Loading />;
+  return (
+    <Avatar
+      size={size}
+      src={
+        session.user.image
+          ? session.user.image
+          : "https://www.gravatar.com/avatar/" + hash(session.user.email + "")
+      }
+    />
+  );
+};
+
+const AvatarPopover = () => {
   const [session, loading] = useSession();
   const [visible, setVisible] = useState(false);
   const changeHandler = (next) => {
     setVisible(next);
   };
-  const isXS = useMediaQuery("xs");
   const content = () => (
     <>
       <Popover.Item title>
@@ -43,7 +210,7 @@ const Header = () => {
       </Popover.Item>
       <Popover.Item>
         <NextLink href={"/new-post"}>
-          <Link> Write a post </Link>
+          <Link style={{ whiteSpace: "nowrap" }}> Write a post </Link>
         </NextLink>
       </Popover.Item>
       <Popover.Item>
@@ -56,9 +223,7 @@ const Header = () => {
         <a
           onClick={(e) => {
             e.preventDefault();
-            signOut({
-              callbackUrl: process.env.BASE_URL,
-            });
+            signOut();
           }}
         >
           {" "}
@@ -68,114 +233,17 @@ const Header = () => {
     </>
   );
   return (
-    <Page.Header>
-      <Card shadow style={{ width: "100%" }}>
-        <Grid.Container justify={"center"}>
-          {/* More Option */}
-          <Grid xs={4} sm={0}>
-            <NextLink href={"/"}>
-              <Button
-                size={isXS ? "small" : "medium"}
-                auto
-                icon={<Icon.Menu />}
-              />
-            </NextLink>
-          </Grid>
-
-          {/* Blog Logo */}
-          <Grid xs={0} sm={4} md={3.5} lg={3}>
-            <NextLink href={"/"}>
-              <Button auto type="secondary-light">
-                <Text h3> Blog </Text>
-              </Button>
-            </NextLink>
-          </Grid>
-
-          {/* Search Bar */}
-          <Grid xs={0} sm={7} md={8} lg={9} xl={8}>
-            <Input placeholder="Search" width="100%" />
-          </Grid>
-
-          {/* Blank Bar */}
-          <Grid xs={6.5} sm={4} md={5} lg={5} xl={4} />
-
-          {loading && <Loading />}
-          {!session && (
-            <>
-              {/* Login Button */}
-              <Grid xs={0} sm={3.5} md={3} lg={3} xl={2}>
-                <Button
-                  size={isXS ? "small" : "medium"}
-                  auto
-                  onClick={() => signIn()}
-                >
-                  <Text b> Log in </Text>
-                </Button>
-              </Grid>
-
-              {/* Search Button */}
-              <Grid xs={4} sm={0} lg={0}>
-                <Button
-                  size={isXS ? "small" : "medium"}
-                  auto
-                  icon={<Icon.Search />}
-                />
-              </Grid>
-
-              {/* Sign Up Button */}
-              <Grid xs={9.5} sm={5.5} md={4.5} lg={4} xl={3}>
-                <Button
-                  size={isXS ? "small" : "medium"}
-                  auto
-                  type="success-light"
-                  onClick={() => signIn()}
-                >
-                  <Text b> Create account </Text>
-                </Button>
-              </Grid>
-            </>
-          )}
-          {session && (
-            <>
-              {/* Write post  button */}
-              <Grid xs={10} md={4.5} lg={3.5} xl={2.5}>
-                <NextLink href={"/new-post"}>
-                  <Button
-                    size={isXS ? "small" : "medium"}
-                    auto
-                    type="success-light"
-                  >
-                    <Text b> Write a post </Text>
-                  </Button>
-                </NextLink>
-              </Grid>
-
-              {/* Avatar Popover */}
-              <Grid xs={3.5} md={3} lg={3.5} xl={1}>
-                <Spacer x={0.5} />
-                <Popover
-                  content={content}
-                  visible={visible}
-                  trigger={"hover"}
-                  placement={"bottomEnd"}
-                  onVisibleChange={changeHandler}
-                >
-                  <Avatar
-                    size={isXS ? 36 : 42}
-                    src={
-                      session.user.image
-                        ? session.user.image
-                        : "https://www.gravatar.com/avatar/" +
-                          hash(session.user.email + "")
-                    }
-                  />
-                </Popover>
-              </Grid>
-            </>
-          )}
-        </Grid.Container>
-      </Card>
-    </Page.Header>
+    <>
+      <Popover
+        content={content}
+        visible={visible}
+        trigger={"hover"}
+        placement={"bottomEnd"}
+        onVisibleChange={changeHandler}
+      >
+        <MyAvatar />
+      </Popover>
+    </>
   );
 };
 
