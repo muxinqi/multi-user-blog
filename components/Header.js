@@ -133,7 +133,9 @@ const Mobile = () => {
               // logged in
               <>
                 {/* Search Button */}
-                <Button size={"small"} auto icon={<Icon.Search />} />
+                <NextLink href={"/search"}>
+                  <Button size={"small"} auto icon={<Icon.Search />} />
+                </NextLink>
 
                 <Spacer x={0.5} />
 
@@ -153,7 +155,9 @@ const Mobile = () => {
               // guest
               <>
                 {/* Search Button */}
-                <Button size={"small"} auto icon={<Icon.Search />} />
+                <NextLink href={"/search"}>
+                  <Button size={"small"} auto icon={<Icon.Search />} />
+                </NextLink>
 
                 <Spacer x={0.5} />
 
