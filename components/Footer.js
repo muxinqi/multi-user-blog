@@ -1,7 +1,29 @@
-import { Col, Divider, Grid, Link, Row, Spacer, Text } from "@geist-ui/react";
+import { Col, Divider, Link, Row, Spacer, Text } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
+import NextLink from "next/link";
 
 const Footer = () => {
+  const firstLine = [
+    { name: "Home", href: "/" },
+    { name: "Tag", href: "/tag" },
+    { name: "Archive", href: "/archive" },
+    { name: "FAQ", href: "/faq" },
+    { name: "Donate", href: "/donate" },
+    { name: "Sponsors", href: "/sponsors" },
+  ];
+  const secondLine = [
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Terms of use", href: "/tos" },
+    { name: "Code of Conduct", href: "/code-of-conduct" },
+    { name: "Contact", href: "/contact" },
+  ];
+  const thirdLine = [
+    { name: "Twitter", href: "/twitter", icon: <Icon.Twitter /> },
+    { name: "Facebook", href: "/facebook", icon: <Icon.Facebook /> },
+    { name: "GitHub", href: "/github", icon: <Icon.Github /> },
+    { name: "Instagram", href: "/instagram", icon: <Icon.Instagram /> },
+    { name: "Telegram", href: "/telegram", icon: <Icon.Send /> },
+  ];
   return (
     <div>
       <Spacer y={0.5} />
@@ -10,97 +32,41 @@ const Footer = () => {
       <Row>
         <Col style={{ paddingLeft: "4%", paddingRight: "4%" }}>
           {/* First Line - Home, Archive, Tag, FAQ */}
-          <Grid.Container gap={0.5} justify="center">
-            <Grid xs={5} sm={3} md={2} lg={1.5}>
-              <Link href={"/"}>
-                <Text>Home</Text>
-              </Link>
-            </Grid>
-            <Grid xs={5} sm={3} md={2} lg={1.5}>
-              <Link href={"/archive"}>
-                <Text>Archive</Text>
-              </Link>
-            </Grid>
-            <Grid xs={4} sm={2.5} md={2} lg={1}>
-              <Link href={"/tag"}>
-                <Text>Tag</Text>
-              </Link>
-            </Grid>
-            <Grid xs={4} sm={2.5} md={2} lg={1}>
-              <Link href={"/faq"}>
-                <Text>FAQ</Text>
-              </Link>
-            </Grid>
-            <Grid xs={8} sm={4} md={3} lg={2}>
-              <Link href={"/zen-of-code"}>
-                <Text>Zen of Code</Text>
-              </Link>
-            </Grid>
-            <Grid xs={6} sm={3} md={2} lg={1.3}>
-              <Link href={"/donate"}>
-                <Text>Donate</Text>
-              </Link>
-            </Grid>
-            <Grid xs={6} sm={3} md={2} lg={1.5}>
-              <Link href={"/sponsors"}>
-                <Text>Sponsors</Text>
-              </Link>
-            </Grid>
-          </Grid.Container>
+          <Row justify={"center"}>
+            {firstLine.map((e) => (
+              <NextLink href={e.href} key={e}>
+                <Link block style={{ color: "inherit", marginLeft: "3%" }}>
+                  {e.name}
+                </Link>
+              </NextLink>
+            ))}
+          </Row>
 
           {/* Second Line - About, Privacy Policy, Terms of use, Contact */}
-          <Grid.Container gap={0.5} justify="center">
-            <Grid xs={8} sm={4.5} md={3} lg={2.5}>
-              <Link href={"/privacy"}>
-                <Text>Privacy Policy</Text>
-              </Link>
-            </Grid>
-            <Grid xs={8} sm={4.5} md={3} lg={2.5}>
-              <Link href={"/tos"}>
-                <Text>Terms of Use</Text>
-              </Link>
-            </Grid>
-            <Grid xs={4} sm={3} md={2} lg={1.5}>
-              <Link href={"/contact"}>
-                <Text>Contact</Text>
-              </Link>
-            </Grid>
-          </Grid.Container>
-
-          <Spacer y={0.5} />
+          <Row justify={"center"} style={{ marginTop: "25px" }}>
+            {secondLine.map((e) => (
+              <NextLink href={e.href} key={e}>
+                <Link block style={{ color: "inherit" }}>
+                  {e.name}
+                </Link>
+              </NextLink>
+            ))}
+          </Row>
 
           {/* Third Line - Twitter, Facebook, Github, Instagram, Telegram */}
-          <Grid.Container gap={0.5} justify="center">
-            <Grid xs={3.5} sm={3} md={2} lg={1}>
-              <Link href={"/twitter"}>
-                <Icon.Twitter />
-              </Link>
-            </Grid>
-            <Grid xs={3.5} sm={3} md={2} lg={1}>
-              <Link href={"/facebook"}>
-                <Icon.Facebook />
-              </Link>
-            </Grid>
-            <Grid xs={3.5} sm={3} md={2} lg={1}>
-              <Link href={"/github"}>
-                <Icon.Github />
-              </Link>
-            </Grid>
-            <Grid xs={3.5} sm={3} md={2} lg={1}>
-              <Link href={"/instagram"}>
-                <Icon.Instagram />
-              </Link>
-            </Grid>
-            <Grid xs={3.5} sm={3} md={2} lg={1}>
-              <Link href={"/telegram"}>
-                <Icon.Send />
-              </Link>
-            </Grid>
-          </Grid.Container>
+          <Row justify={"center"} style={{ marginTop: "25px" }}>
+            {thirdLine.map((e) => (
+              <NextLink href={e.href} key={e}>
+                <Link block style={{ color: "inherit", marginLeft: "3%" }}>
+                  {e.icon}
+                </Link>
+              </NextLink>
+            ))}
+          </Row>
         </Col>
       </Row>
       <Spacer y={1} />
-      <Divider style={{ width: "20%", margin: "auto" }} />
+      <Divider style={{ width: "25%", margin: "auto" }} />
       <Spacer y={1} />
       <Row>
         <Col
@@ -114,7 +80,7 @@ const Footer = () => {
           <Row justify={"center"}>
             <Text p>
               <Text b>M Blog</Text> - A platform where you can host your daily
-              life and inspiration. With fast global access and a high SLA
+              life and inspiration. With fast global access, and a high SLA
               guarantee.
             </Text>
           </Row>
@@ -124,7 +90,7 @@ const Footer = () => {
         <Col style={{ width: "100%", paddingLeft: "6%", paddingRight: "6%" }}>
           <Row justify={"center"}>
             <Text p>
-              Made with love and{" "}
+              Made with <Icon.HeartFill color={"red"} size={20} /> and{" "}
               <Link href={"https://nextjs.org/?ref=muxinqi.com"}>
                 <Text b>Next.JS</Text>
               </Link>
