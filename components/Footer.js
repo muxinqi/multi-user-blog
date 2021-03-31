@@ -35,7 +35,7 @@ const Footer = () => {
           <Row justify={"center"}>
             {firstLine.map((e) => (
               <NextLink href={e.href} key={e}>
-                <Link block style={{ color: "inherit", marginLeft: "3%" }}>
+                <Link block style={{ color: "inherit" }}>
                   {e.name}
                 </Link>
               </NextLink>
