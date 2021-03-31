@@ -23,7 +23,7 @@
     "react-mde": "^11.0.6",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
-    "swr": "^0.5.4"
+    "swr": "^0.5.5"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
