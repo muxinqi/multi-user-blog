@@ -23,7 +23,7 @@ const hash = (s) => {
   }, 0);
 };
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, mark }) => {
   const isXS = useMediaQuery("xs");
   const {
     id,
@@ -31,6 +31,7 @@ const PostCard = ({ post }) => {
     // slug,
     createdAt,
     likesCount,
+    rawContent,
     // viewsCount,
     tags,
     coverImage,
@@ -48,9 +49,33 @@ const PostCard = ({ post }) => {
   const avatarUrl = author.image
     ? author.image
     : "https://www.gravatar.com/avatar/" + hash(author.email + "");
+
+  // description highlight
+  let highlightContent = null;
+  const keywordsIndex =
+    mark && rawContent && rawContent.search(new RegExp(mark, "i"));
+  const textLengthBeforeKeywords = 40;
+  const textLengthAfterKeywords = 80;
+  if (mark && rawContent && keywordsIndex !== -1) {
+    const startIndex =
+      keywordsIndex > textLengthBeforeKeywords
+        ? keywordsIndex - textLengthBeforeKeywords
+        : 0;
+    const endIndex =
+      rawContent.length - 1 - keywordsIndex > textLengthAfterKeywords
+        ? keywordsIndex + textLengthAfterKeywords
+        : rawContent.length - 1;
+    const length = endIndex - startIndex;
+    // Note the $& in it.
+    // This is a reference to the matching word, with case preserved.
+    highlightContent = rawContent
+      .substr(startIndex, length)
+      .replace(new RegExp(mark, "gi"), "<mark>$&</mark>");
+  }
   return (
     <Row style={{ marginBottom: "15px" }}>
       <Card shadow style={{ width: "100%" }}>
+        {/* Cover Image */}
         {!coverImage && <></>}
         {coverImage && (
           <NextLink href={`/posts/${id}`}>
@@ -65,6 +90,8 @@ const PostCard = ({ post }) => {
             </a>
           </NextLink>
         )}
+
+        {/* Title */}
         <NextLink href={`/posts/${id}`}>
           <Link underline>
             <Text h2 style={{ marginTop: "15px", marginBottom: "-10px" }}>
@@ -73,6 +100,8 @@ const PostCard = ({ post }) => {
           </Link>
         </NextLink>
         <br />
+
+        {/* Tags */}
         {!tags && <></>}
         {tags.map((tag) => (
           <Tag
@@ -83,15 +112,24 @@ const PostCard = ({ post }) => {
             #{tag.name}
           </Tag>
         ))}
+
+        {/* Keywords Highlight for Search */}
+        {mark && highlightContent && (
+          <div dangerouslySetInnerHTML={{ __html: highlightContent }} />
+        )}
+
         <Card.Footer>
+          {/* Author Avatar */}
           <User src={avatarUrl} name={author.name ? author.name : "User"}>
             {moment(createdAt).fromNow()}
           </User>
+          {/* Reactions Count */}
           <NextLink href={`/posts/${id}`}>
             <Button auto icon={<Icon.Heart />} style={{ marginRight: "2%" }}>
               {likesCount}&nbsp;{isXS ? "" : "reactions"}
             </Button>
           </NextLink>
+          {/* Comments Count */}
           {typeof commentsCount.data == "undefined" && <Loading />}
           {typeof commentsCount.data !== "undefined" && (
             <NextLink href={`/posts/${id}#discussion`}>
@@ -107,17 +145,8 @@ const PostCard = ({ post }) => {
 };
 
 PostCard.propTypes = {
-  post: PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    slug: PropTypes.string,
-    createdAt: PropTypes.string,
-    likesCount: PropTypes.number,
-    viewsCount: PropTypes.number,
-    tags: PropTypes.array,
-    coverImage: PropTypes.string,
-    author: PropTypes.object,
-  }),
+  post: PropTypes.object,
+  mark: PropTypes.string,
 };
 
 export default PostCard;
