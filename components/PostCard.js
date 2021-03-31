@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Image,
   Link,
   Loading,
   Row,
@@ -10,7 +11,7 @@ import {
   User,
 } from "@geist-ui/react";
 import * as Icon from "@geist-ui/react-icons";
-import Image from "next/image";
+// import NextImage from "next/image";
 import { useCommentsCountByPostId } from "../lib/useHomePosts";
 import NextLink from "next/link";
 import moment from "moment";
@@ -75,50 +76,54 @@ const PostCard = ({ post, mark }) => {
   return (
     <Row style={{ marginBottom: "15px" }}>
       <Card shadow style={{ width: "100%" }}>
-        {/* Cover Image */}
-        {!coverImage && <></>}
-        {coverImage && (
+        <Card.Body style={{ padding: "0" }}>
+          {/* Cover Image */}
+          {coverImage && (
+            <NextLink href={`/posts/${id}`}>
+              <a>
+                <Image
+                  src={coverImage}
+                  alt="Post Cover Image"
+                  layout="responsive"
+                  width={2100}
+                  height={900}
+                />
+              </a>
+            </NextLink>
+          )}
+        </Card.Body>
+        <Card.Content style={{ paddingLeft: "2%", paddingRight: "2%" }}>
+          {/* Title */}
           <NextLink href={`/posts/${id}`}>
-            <a>
-              <Image
-                src={coverImage}
-                alt="Post Cover Image"
-                layout="responsive"
-                width={210}
-                height={90}
-              />
-            </a>
+            <Link underline>
+              <Text h2 style={{ marginTop: "-10px", marginBottom: "-10px" }}>
+                {title}
+              </Text>
+            </Link>
           </NextLink>
-        )}
+          <br />
 
-        {/* Title */}
-        <NextLink href={`/posts/${id}`}>
-          <Link underline>
-            <Text h2 style={{ marginTop: "15px", marginBottom: "-10px" }}>
-              {title}
-            </Text>
-          </Link>
-        </NextLink>
-        <br />
+          {/* Tags */}
+          {!tags && <></>}
+          {tags.map((tag) => (
+            <Tag
+              type={
+                tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]
+              }
+              style={{ marginRight: "1%" }}
+              key={tag.id}
+            >
+              #{tag.name}
+            </Tag>
+          ))}
 
-        {/* Tags */}
-        {!tags && <></>}
-        {tags.map((tag) => (
-          <Tag
-            type={tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]}
-            style={{ marginRight: "1%" }}
-            key={tag.id}
-          >
-            #{tag.name}
-          </Tag>
-        ))}
+          {/* Keywords Highlight for Search */}
+          {mark && highlightContent && (
+            <div dangerouslySetInnerHTML={{ __html: highlightContent }} />
+          )}
+        </Card.Content>
 
-        {/* Keywords Highlight for Search */}
-        {mark && highlightContent && (
-          <div dangerouslySetInnerHTML={{ __html: highlightContent }} />
-        )}
-
-        <Card.Footer>
+        <Card.Footer style={{ paddingLeft: "0", paddingRight: "2%" }}>
           {/* Author Avatar */}
           <User src={avatarUrl} name={author.name ? author.name : "User"}>
             {moment(createdAt).fromNow()}
