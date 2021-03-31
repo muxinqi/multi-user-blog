@@ -2,113 +2,151 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
   Col,
-  Divider,
   Grid,
   Input,
   Page,
   Radio,
-  Row,
-  Spacer,
   Tabs,
   Text,
   useInput,
-  useMediaQuery,
   useTabs,
 } from "@geist-ui/react";
+import * as Icon from "@geist-ui/react-icons";
 import NextLink from "next/link";
 import { useState } from "react";
 import PostCard from "../components/PostCard";
+import { useRouter } from "next/router";
 
 const SearchPage = () => {
-  const isMobile = !useMediaQuery("md", { match: "up" });
   const {
     state: keywords,
     setState: setKeywords,
     bindings: keywordsBindings,
   } = useInput("");
   const filterOptions = ["posts", "listings", "comments", "my-posts-only"];
+  const sortOptions = [
+    { label: "Most Relevant", value: "relevant" },
+    { label: "Newest", value: "newest" },
+    { label: "Oldest", value: "oldest" },
+  ];
   const [filter, setFilter] = useState(filterOptions[0]);
-  const { state: sort, setState: setSort, bindings: sortBindings } = useTabs(
-    "relevant"
-  );
+  const [sort, setSort] = useState("relevant");
+  const changeSortHandler = async (val) => {
+    setSort(val);
+    await handleSearch(keywords, filter, val);
+    console.log(val);
+  };
   const [searchResults, setSearchResults] = useState(null);
+
+  const handleSearch = async (k, f, s) => {
+    const qKeywords = k || keywords;
+    const qFilter = f || filter;
+    const qSort = s || sort;
+    const url = `/api/search?keywords=${qKeywords}&filter=${qFilter}&sort=${qSort}`;
+    console.log(url);
+    const res = await fetch(url);
+    if (res.ok) {
+      const data = await res.json();
+      setSearchResults(data);
+    } else {
+      alert("search failed");
+    }
+  };
   const onKeyup = async (e) => {
+    // when `ENTER` key was pressed
     if (e.keyCode === 13) {
-      const url = `/api/search?keywords=${keywords}&filter=${filter}&sort=${sort}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        setSearchResults(data);
-      } else {
-        alert("search failed");
+      if (keywords) {
+        await handleSearch();
       }
     }
   };
   const SortTab = () => {
     return (
-      <Tabs hideDivider {...sortBindings}>
-        <Tabs.Item label="Most Relevant" value="relevant" />
-        <Tabs.Item label="Newest" value="newest" />
-        <Tabs.Item label="Oldest" value="oldest" />
+      <Tabs hideDivider value={sort} onChange={changeSortHandler}>
+        {sortOptions.map((sort) => (
+          <Tabs.Item label={sort.label} value={sort.value} key={sort.value} />
+        ))}
       </Tabs>
     );
   };
   return (
     <>
       <Header />
-      <Page.Body style={{ marginTop: "-25px" }}>
+      <Page.Body>
+        {/* Search Bar */}
         <Grid.Container
           justify={"center"}
-          style={{ width: "100%", paddingLeft: "10px", paddingRight: "10px" }}
+          style={{
+            paddingLeft: "2%",
+            paddingRight: "2%",
+            marginTop: "-35px",
+            marginBottom: "15px",
+          }}
         >
-          {isMobile && (
-            <Grid xs={24}>
-              <Input
-                placeholder={"Search..."}
-                width="100%"
-                {...keywordsBindings}
-                onKeyUp={onKeyup}
-              />
-            </Grid>
-          )}
-          <Grid xs={24} md={7} xl={4} style={{ marginTop: "15px" }}>
-            <Col>
-              {!isMobile && searchResults && (
-                <Text h3>Search results ({searchResults.length})</Text>
-              )}
-              {isMobile && <SortTab />}
-              <div style={{ marginLeft: "10px", marginRight: "10px" }}>
-                <Radio.Group
-                  value={filter}
-                  onChange={(val) => setFilter(val)}
-                  style={{ marginTop: "10px" }}
-                >
-                  {filterOptions &&
-                    filterOptions.map((option) => {
-                      const name = option
-                        .replace(/-/g, " ")
-                        .replace(/^\S/, (s) => s.toUpperCase());
-                      return (
-                        <Radio value={option} key={option}>
-                          {name}
-                        </Radio>
-                      );
-                    })}
-                </Radio.Group>
-              </div>
-              {isMobile && searchResults && (
-                <Divider x={5} y={3}>
-                  <Text>Search results ({searchResults.length})</Text>
-                </Divider>
-              )}
-            </Col>
+          <Grid xs={24} xl={15}>
+            <Input
+              clearable
+              icon={<Icon.Search />}
+              placeholder={"Search..."}
+              {...keywordsBindings}
+              onKeyUp={onKeyup}
+              width="100%"
+            />
+          </Grid>
+        </Grid.Container>
+
+        {/* Title & Sort Tabs */}
+        <Grid.Container
+          justify={"center"}
+          style={{ paddingLeft: "2%", paddingRight: "2%" }}
+        >
+          <Grid xs={24} sm={12} xl={4}>
+            <Text h3>
+              Search results{" "}
+              {searchResults &&
+                searchResults.length > 0 &&
+                `(${searchResults.length})`}
+            </Text>
+          </Grid>
+          <Grid xs={24} sm={12} xl={11} justify={"flex-end"}>
+            <SortTab />
+          </Grid>
+        </Grid.Container>
+
+        {/* Filters & Results Feed */}
+        <Grid.Container
+          justify={"center"}
+          style={{ paddingLeft: "2%", paddingRight: "2%" }}
+        >
+          <Grid xs={24} md={7} xl={4}>
+            <Radio.Group
+              value={filter}
+              onChange={(val) => setFilter(val)}
+              style={{ marginTop: "10px" }}
+            >
+              {filterOptions &&
+                filterOptions.map((option) => {
+                  const name = option
+                    .replace(/-/g, " ")
+                    .replace(/^\S/, (s) => s.toUpperCase());
+                  // other filter support
+                  return (
+                    <Radio
+                      value={option}
+                      key={option}
+                      disabled={option !== "posts"}
+                    >
+                      {name}
+                    </Radio>
+                  );
+                })}
+            </Radio.Group>
           </Grid>
           <Grid xs={24} md={17} xl={11}>
             <Col>
-              <Row justify={"end"}>{!isMobile && <SortTab />}</Row>
               {searchResults &&
                 searchResults.map((post) => (
-                  <PostCard post={post} key={post.id} />
+                  <PostCard post={post} key={post.id} mark={keywords} />
                 ))}
             </Col>
           </Grid>

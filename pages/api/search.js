@@ -15,7 +15,18 @@ export default async function handler(req, res) {
     // GET /api/search
     const keywords = parseQuery(req, "keywords");
     const filters = parseQuery(req, "filters") || "posts";
-    const sort = parseQuery(req, "sort") || "relevant";
+    const qSort = parseQuery(req, "sort");
+    console.log("qSort: ", qSort);
+    let sort;
+    switch (qSort) {
+      case "oldest":
+        sort = "asc";
+        break;
+      case "relevant":
+      case "newest":
+      default:
+        sort = "desc";
+    }
     let result;
     if (!keywords) {
       result = 1;
@@ -24,50 +35,100 @@ export default async function handler(req, res) {
     }
     switch (filters) {
       case "posts": {
-        result = await prisma.post.findMany({
-          where: {
-            AND: {
-              published: true,
-              OR: [
-                {
-                  rawContent: {
-                    contains: keywords,
+        if (qSort === "relevant") {
+          // sort with likes count (Most Relevant)
+          console.log("relevant");
+          result = await prisma.post.findMany({
+            where: {
+              AND: {
+                published: true,
+                OR: [
+                  {
+                    rawContent: {
+                      contains: keywords,
+                      mode: "insensitive",
+                    },
                   },
-                },
-                {
-                  title: {
-                    contains: keywords,
+                  {
+                    title: {
+                      contains: keywords,
+                      mode: "insensitive",
+                    },
                   },
-                },
-              ],
-            },
-          },
-          orderBy: [
-            {
-              likesCount: "desc",
-            },
-            {
-              createdAt: "desc",
-            },
-          ],
-          select: {
-            id: true,
-            title: true,
-            slug: true,
-            createdAt: true,
-            tags: true,
-            rawContent: true,
-            likesCount: true,
-            viewsCount: true,
-            author: {
-              select: {
-                id: true,
-                name: true,
-                image: true,
+                ],
               },
             },
-          },
-        });
+            orderBy: [
+              {
+                likesCount: "desc",
+              },
+              {
+                createdAt: "desc",
+              },
+            ],
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+              createdAt: true,
+              tags: true,
+              rawContent: true,
+              likesCount: true,
+              viewsCount: true,
+              author: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          });
+        } else {
+          // sort without likes count (Newest or Oldest)
+          console.log(sort);
+          result = await prisma.post.findMany({
+            where: {
+              AND: {
+                published: true,
+                OR: [
+                  {
+                    rawContent: {
+                      contains: keywords,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    title: {
+                      contains: keywords,
+                      mode: "insensitive",
+                    },
+                  },
+                ],
+              },
+            },
+            orderBy: {
+              createdAt: sort,
+            },
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+              createdAt: true,
+              tags: true,
+              rawContent: true,
+              likesCount: true,
+              viewsCount: true,
+              author: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                },
+              },
+            },
+          });
+        }
         break;
       }
     }

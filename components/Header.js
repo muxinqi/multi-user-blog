@@ -36,10 +36,11 @@ const PC = () => {
     <Page.Header>
       <Card shadow style={{ width: "100%" }}>
         <Grid.Container justify={"center"}>
+          {/* Left Side */}
           <Grid md={14} xl={14}>
             {/* Blog Logo */}
             <NextLink href={"/"}>
-              <Button auto type="secondary-light">
+              <Button auto size="medium" type="secondary-light">
                 <Text h3> Blog </Text>
               </Button>
             </NextLink>
@@ -47,12 +48,20 @@ const PC = () => {
             <Spacer x={0.5} />
 
             {/* Search Bar */}
-            <div style={{ width: "450px", maxWidth: "100%" }}>
-              <Input placeholder="Search" width="100%" />
-            </div>
+            {/*<div style={{ width: "450px", maxWidth: "100%" }}>*/}
+            {/*  <Input placeholder="Search" width="100%" />*/}
+            {/*</div>*/}
           </Grid>
 
+          {/* Right Side */}
           <Grid md={10} xl={7} justify={"flex-end"}>
+            {/* Search Button */}
+            <NextLink href={"/search"}>
+              <Button size="medium" auto icon={<Icon.Search />} />
+            </NextLink>
+
+            <Spacer x={0.5} />
+
             {session ? (
               // logged in
               <>
