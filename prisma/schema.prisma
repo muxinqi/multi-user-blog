@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["groupBy"]
+  provider = "prisma-client-js"
+  // previewFeatures = []
 }
 
 datasource db {
@@ -100,7 +100,7 @@ model Comment {
 
 model Tag {
   id    Int    @id @default(autoincrement())
-  name  String
+  name  String @unique
   posts Post[] @relation(name: "tag_on_post")
 
   @@map(name: "tag")
