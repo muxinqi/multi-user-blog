@@ -36,8 +36,18 @@ async function handlePOST(req, res) {
   // if not logged in
   if (!session) {
     res.status(401).end("Unauthorized");
+    return;
   }
-  const { title, coverImage, slug, rawContent, published } = req.body;
+  const { title, coverImage, slug, rawContent, tags, published } = req.body;
+  const tagsData = [];
+  if (tags) {
+    tags.map((tag) => {
+      tagsData.push({
+        where: { name: tag.name.toLowerCase() },
+        create: { name: tag.name.toLowerCase() },
+      });
+    });
+  }
   const renderedContent = await remark().use(html).process(rawContent);
   const result = await prisma.post.create({
     data: {
@@ -46,6 +56,9 @@ async function handlePOST(req, res) {
       slug: slug,
       rawContent: rawContent,
       renderedContent: renderedContent.toString(),
+      tags: {
+        connectOrCreate: tagsData,
+      },
       published: published,
       author: {
         connect: {
