@@ -92,7 +92,9 @@ const PostCard = ({ post, mark }) => {
             </NextLink>
           )}
         </Card.Body>
-        <Card.Content style={{ paddingLeft: "2%", paddingRight: "2%" }}>
+        <Card.Content
+          style={{ paddingLeft: "2%", paddingRight: "2%", paddingBottom: "2%" }}
+        >
           {/* Title */}
           <NextLink href={`/posts/${id}`}>
             <Link underline>
@@ -104,18 +106,18 @@ const PostCard = ({ post, mark }) => {
           <br />
 
           {/* Tags */}
-          {!tags && <></>}
-          {tags.map((tag) => (
-            <Tag
-              type={
-                tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]
-              }
-              style={{ marginRight: "1%" }}
-              key={tag.id}
-            >
-              #{tag.name}
-            </Tag>
-          ))}
+          {tags &&
+            tags.map((tag) => (
+              <Tag
+                type={
+                  tagTypeArray[Math.floor(Math.random() * tagTypeArray.length)]
+                }
+                style={{ marginRight: "1%", marginTop: "1%" }}
+                key={tag.id}
+              >
+                #{tag.name}
+              </Tag>
+            ))}
 
           {/* Keywords Highlight for Search */}
           {mark && highlightContent && (
