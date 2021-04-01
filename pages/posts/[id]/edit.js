@@ -7,6 +7,9 @@ import {
   Input,
   Loading,
   Page,
+  Popover,
+  Link,
+  Tag,
   Row,
   Spacer,
   Text,
@@ -41,6 +44,11 @@ export async function getServerSideProps({ params }) {
   };
 }
 
+const KeyCodes = {
+  comma: 188,
+  enter: 13,
+};
+
 const EditPostPage = ({ data, postId }) => {
   const tagOptions = [
     { label: "London", value: "london" },
@@ -52,12 +60,54 @@ const EditPostPage = ({ data, postId }) => {
   const [slug, setSlug] = React.useState(data.slug);
   const [imageIsLoading, setImageIsLoading] = React.useState(false);
   const [tags, setTags] = React.useState(data.tags);
+  const [tagInputValue, setTagInputValue] = React.useState();
   const [value, setValue] = React.useState(data.rawContent);
   const [selectedTab, setSelectedTab] = React.useState("write");
   const [toasts, setToast] = useToasts();
   const router = useRouter();
 
   // const { visible, setVisible, bindings } = useModal()
+
+  const onTagInputKeyup = (e) => {
+    if (e.keyCode === KeyCodes.comma || e.keyCode === KeyCodes.enter) {
+      // tag length cannot be empty
+      if (!tagInputValue) {
+        setToast({
+          type: "warning",
+          text: "⚠️ Please input tag name",
+        });
+        return;
+      }
+      if (tags.some((e) => e.name === tagInputValue)) {
+        setToast({
+          type: "warning",
+          text: "⚠️ Please enter a different label",
+        });
+        return;
+      }
+      tags.push({ name: tagInputValue });
+      setTagInputValue("");
+      // setTagOptions([]);
+      setToast({
+        type: "success",
+        text: (
+          <div>
+            ✅ Add tag <b>`{tagInputValue}`</b> successful
+          </div>
+        ),
+      });
+    }
+  };
+
+  const tagInputValueChangeHandler = (e) => setTagInputValue(e);
+
+  const handleDeleteTag = (tagName) => {
+    // delete tag by tagName
+    const newTags = tags.filter((value) => {
+      return value.name !== tagName;
+    });
+    setTags(newTags);
+  };
 
   function inputValidate() {
     if (typeof title == "undefined" || !title || title.length === 0) {
@@ -87,7 +137,7 @@ const EditPostPage = ({ data, postId }) => {
       coverImage: coverImage,
       slug: slug,
       rawContent: value,
-      tags: tags ? [] : null,
+      tags: tags,
       published: published,
     };
     await fetch(url, {
@@ -203,6 +253,33 @@ const EditPostPage = ({ data, postId }) => {
               </Row>
               <Row>
                 <Grid.Container gap={0.5}>
+                  <Grid xs={24}>
+                    {tags &&
+                      tags.map((tag) => (
+                        <Popover
+                          key={tag.name}
+                          content={
+                            <Button
+                              auto
+                              type={"error"}
+                              ghost
+                              iconRight={<Icon.Delete />}
+                              onClick={() => handleDeleteTag(tag.name)}
+                            >
+                              delete
+                            </Button>
+                          }
+                        >
+                          <Link
+                            block
+                            onClick={(e) => e.preventDefault()}
+                            style={{ paddingLeft: "3px", paddingRight: "3px" }}
+                          >
+                            <Tag>#{tag.name}</Tag>
+                          </Link>
+                        </Popover>
+                      ))}
+                  </Grid>
                   <Grid xs={24} lg={12}>
                     <Input
                       width="100%"
@@ -210,14 +287,23 @@ const EditPostPage = ({ data, postId }) => {
                       placeholder={"Your Slug (e.g. hello-world)"}
                       value={slug}
                       onChange={(e) => setSlug(e.target.value)}
-                    ></Input>
+                    />
                   </Grid>
                   <Grid xs={24} lg={12}>
+                    {/* Post Tag Input Bar */}
                     <AutoComplete
                       icon={<Icon.Hash />}
                       width="100%"
                       placeholder={"Add Up To 4 Tags..."}
-                      options={tagOptions}
+                      value={tagInputValue}
+                      onChange={tagInputValueChangeHandler}
+                      // options={tagOptions}
+                      clearable
+                      // disableFreeSolo
+                      disabled={tags && tags.length >= 4}
+                      onKeyUp={onTagInputKeyup}
+                      // onSearch={tagSearchHandler}
+                      labelRight={tags && tags.length + " / 4"}
                     />
                   </Grid>
                 </Grid.Container>

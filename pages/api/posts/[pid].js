@@ -30,7 +30,11 @@ async function handleGET(postId, res) {
       id: Number(postId),
     },
     include: {
-      tags: true,
+      tags: {
+        select: {
+          name: true,
+        },
+      },
       author: true,
     },
   });
@@ -111,6 +115,15 @@ async function handlePUT(session, postId, req, res) {
   }
   // update post
   const { id, title, slug, coverImage, rawContent, tags, published } = req.body;
+  const tagsData = [];
+  if (tags) {
+    tags.map((tag) => {
+      tagsData.push({
+        where: { name: tag.name.toLowerCase() },
+        create: { name: tag.name.toLowerCase() },
+      });
+    });
+  }
   const renderedContent = await remark().use(html).process(rawContent);
   const result = await prisma.post.update({
     where: { id: Number(postId) },
@@ -120,6 +133,9 @@ async function handlePUT(session, postId, req, res) {
       coverImage: coverImage,
       rawContent: rawContent,
       renderedContent: renderedContent.toString(),
+      tags: {
+        connectOrCreate: tagsData,
+      },
       published: published,
     },
   });
