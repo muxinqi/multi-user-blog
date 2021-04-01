@@ -135,10 +135,10 @@
   resolved "https://registry.yarnpkg.com/@panva/asn1.js/-/asn1.js-1.0.0.tgz#dd55ae7b8129e02049f009408b97c61ccf9032f6"
   integrity sha512-UdkG3mLEqXgnlKsWanWcgb6dOjUzJ+XC5f+aWw30qrtjxeNUSfKX1cd5FBzOaXQumoe9nIqeZUvrRJS03HCCtw==
 
-"@prisma/client@^2.20.0":
-  version "2.20.0"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.20.0.tgz#056ed756c2ea536b87771e79f68a984e94a452d8"
-  integrity sha512-WnYFD7JVs4nFyJyvOZc/fRQ6G+yLEXeANElX70hLlGHvi6YiruTDCXs/nryO8pTzdhg3//+ZynCvV+WHxV+sFg==
+"@prisma/client@^2.20.1":
+  version "2.20.1"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.20.1.tgz#45e7bade3a1b58972fc35e511578e313ead18770"
+  integrity sha512-/IYPubBi55rNMHfE0wwglA6eTWEZD77oz+x+3Mm9ji2lDKdS1lnYKZ0wZX0E3AB8gTNL/zsGtfzmfjgn3ePyIw==
   dependencies:
     "@prisma/engines-version" "2.20.0-26.60ba6551f29b17d7d6ce479e5733c70d9c00860e"
 
