@@ -30,7 +30,11 @@ async function handleGET(postId, res) {
       id: Number(postId),
     },
     include: {
-      tags: true,
+      tags: {
+        select: {
+          name: true,
+        },
+      },
       author: true,
     },
   });
