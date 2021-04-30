@@ -2663,10 +2663,10 @@ react-markdown@^5.0.3:
     unist-util-visit "^2.0.0"
     xtend "^4.0.1"
 
-react-mde@^11.0.6:
-  version "11.0.6"
-  resolved "https://registry.yarnpkg.com/react-mde/-/react-mde-11.0.6.tgz#194c8bb225b244a012bb5477a0ad8f7410a2f926"
-  integrity sha512-yWiPSurQvjLVD070zycQR4x5zW3f/kxPlqOMmZoUtVQvUgcM+kwpDQAba5sqtqtAurgUx0Ae9p9Xzgqwt2+ZBA==
+react-mde@^11.4.0:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/react-mde/-/react-mde-11.4.0.tgz#03c5149a1b536249c578813315aa99992d2f1a6c"
+  integrity sha512-/zEvb7EKu+bQBgo1Qs/hqtuTqFuMHdw8LzUkGpzIEUqXFmW6uj/510kT1eQgRx1S8ryYbVlZIZYkC9nzF0Ilgw==
 
 react-refresh@0.8.3:
   version "0.8.3"
