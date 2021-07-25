@@ -11,20 +11,20 @@
     "lint": "eslint '*/**/*.{js,jsx}' --fix"
   },
   "dependencies": {
-    "@geist-ui/react": "^2.1.4",
+    "@geist-ui/react": "^2.1.5",
     "@geist-ui/react-icons": "^1.0.1",
     "@prisma/client": "^2.20.1",
     "inter-ui": "^3.18.1",
     "moment": "^2.29.1",
     "next": "^10.2.3",
-    "next-auth": "^3.23.3",
+    "next-auth": "^3.27.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-markdown": "^5.0.3",
     "react-mde": "^11.5.0",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
-    "swr": "^0.5.5"
+    "swr": "^0.5.6"
   },
   "devDependencies": {
     "eslint": "^7.23.0",

@@ -66,10 +66,10 @@
   resolved "https://registry.yarnpkg.com/@geist-ui/react-icons/-/react-icons-1.0.1.tgz#5da112bbc98216bf05da3aabbd7d21594440b209"
   integrity sha512-/phre1NwXT0Mrxcq3yb+KksJ16/ykptgxI7+jh5pmDZfxnIMPlBWFBGDK0yw96oi752Wuo24X6+tkWjVe/g5Bg==
 
-"@geist-ui/react@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@geist-ui/react/-/react-2.1.4.tgz#52c8d482ef06f5da62488dcdc92e4f950a16b915"
-  integrity sha512-ltScgRiA1BOFvj/krMrCGhd3jXxO7WkS7xBdCEyqcvKxlfvhTLZbQllvL52Uu50vKeH5sWYf+mhpaWC7izuuoA==
+"@geist-ui/react@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@geist-ui/react/-/react-2.1.5.tgz#26532eb1869a97c60c36a3860cba184bdab59f55"
+  integrity sha512-vHn3yOAyXon88m6UnaU9e16iC5U0hFwYbwlroD05dbx4GbH/f5uRhmQ5QI4nkTvVi3/m0++cLGR2ek9U8WY6hg==
   dependencies:
     styled-jsx "3.3.0"
 
@@ -2096,10 +2096,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-next-auth@^3.23.3:
-  version "3.23.3"
-  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-3.23.3.tgz#810b6c0362bd48ee1be2831fef270b89359522fd"
-  integrity sha512-e+As4q+uA4MnnL36P3JxKRKEvy2iPXn8AZ8A8v3wbAc91K6YVgjfDMs+uU30jYAV58u7CnWdypHCRUkF/5WDDA==
+next-auth@^3.27.3:
+  version "3.27.3"
+  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-3.27.3.tgz#b155cfe07675378d35fd0018a8cef16aee68ff0a"
+  integrity sha512-U7LRrSc3ZBUKQcOpqJfVui80jPpx0MQAmtCPI7dJ9DjDg8AfxRBzk59oNCE5MLlbMDb83gEtOu+Mr5hi28qmCg==
   dependencies:
     "@babel/runtime" "^7.14.0"
     "@next-auth/prisma-legacy-adapter" "0.0.1-canary.127"
@@ -3142,10 +3142,10 @@ supports-color@^8.0.0:
   dependencies:
     has-flag "^4.0.0"
 
-swr@^0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-0.5.5.tgz#c72c1615765f33570a16bbb13699e3ac87eaaa3a"
-  integrity sha512-u4mUorK9Ipt+6LEITvWRWiRWAQjAysI6cHxbMmMV1dIdDzxMnswWo1CyGoyBHXX91CchxcuoqgFZ/ycx+YfhCA==
+swr@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-0.5.6.tgz#70bfe9bc9d7ac49a064be4a0f4acf57982e55a31"
+  integrity sha512-Bmx3L4geMZjYT5S2Z6EE6/5Cx6v1Ka0LhqZKq8d6WL2eu9y6gHWz3dUzfIK/ymZVHVfwT/EweFXiYGgfifei3w==
   dependencies:
     dequal "2.0.2"
 
