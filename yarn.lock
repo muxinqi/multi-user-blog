@@ -1564,10 +1564,10 @@ inherits@2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
-inter-ui@^3.18.1:
-  version "3.18.1"
-  resolved "https://registry.yarnpkg.com/inter-ui/-/inter-ui-3.18.1.tgz#32d2676e4b03db08adc597e5c4bd89012f4e2351"
-  integrity sha512-W3LnAirp6a1ixpAHZwr9gH52KlOQOAp0oqbmIoGi2dAIlcIB7auJgLr9XFHUzYy2FoZ0Nf7aPe/nHMZB4/Zvdg==
+inter-ui@^3.19.2:
+  version "3.19.2"
+  resolved "https://registry.yarnpkg.com/inter-ui/-/inter-ui-3.19.2.tgz#8d44124e9ec3334f13eaeca11f51c8c372fbd933"
+  integrity sha512-37zvANW4A5gyXbV7gXFGAUup7q1f07j1qSTAR0n+kHcyynTIisFb1UQNhd4jSbqYnyheMIbbT/sQ/LJ6Migw4A==
 
 internal-slot@^1.0.3:
   version "1.0.3"
@@ -2504,10 +2504,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
-  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
+prettier@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.2.tgz#ef280a05ec253712e486233db5c6f23441e7342d"
+  integrity sha512-lnJzDfJ66zkMy58OL5/NY5zp70S7Nz6KqcKkXYzn2tMVrNxvbqaBpg7H3qHaLxCJ5lNMsGuM8+ohS7cZrthdLQ==
 
 pretty-format@^3.8.0:
   version "3.8.0"
