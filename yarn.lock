@@ -1579,10 +1579,10 @@ inherits@2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
-inter-ui@^3.18.1:
-  version "3.18.1"
-  resolved "https://registry.yarnpkg.com/inter-ui/-/inter-ui-3.18.1.tgz#32d2676e4b03db08adc597e5c4bd89012f4e2351"
-  integrity sha512-W3LnAirp6a1ixpAHZwr9gH52KlOQOAp0oqbmIoGi2dAIlcIB7auJgLr9XFHUzYy2FoZ0Nf7aPe/nHMZB4/Zvdg==
+inter-ui@^3.19.2:
+  version "3.19.2"
+  resolved "https://registry.yarnpkg.com/inter-ui/-/inter-ui-3.19.2.tgz#8d44124e9ec3334f13eaeca11f51c8c372fbd933"
+  integrity sha512-37zvANW4A5gyXbV7gXFGAUup7q1f07j1qSTAR0n+kHcyynTIisFb1UQNhd4jSbqYnyheMIbbT/sQ/LJ6Migw4A==
 
 internal-slot@^1.0.3:
   version "1.0.3"
