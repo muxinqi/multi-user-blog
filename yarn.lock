@@ -143,10 +143,10 @@
   resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-2.27.0-43.cdba6ec525e0213cce26f8e4bb23cf556d1479bb.tgz#60a34634fe26be9caca42556605a132e70810e3c"
   integrity sha512-pwOsYdzw8+cwKlUrCzasiRh96RhNuJ/QcKr0HwjxxlUWTmbEayDKjqRRz5fsUYIpSv5fW1B3SsbzHOqVtFZ6XQ==
 
-"@prisma/engines@2.27.0-43.cdba6ec525e0213cce26f8e4bb23cf556d1479bb":
-  version "2.27.0-43.cdba6ec525e0213cce26f8e4bb23cf556d1479bb"
-  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-2.27.0-43.cdba6ec525e0213cce26f8e4bb23cf556d1479bb.tgz#22084a81e90b66665aa3aacde79ef5b1bc3587fe"
-  integrity sha512-AIbIhAxmd2CHZO5XzQTPrfk+Tp/5eoNoSledOG3yc6Dk97siLvnBuSEv7prggUbedCufDwZLAvwxV4PEw3zOlQ==
+"@prisma/engines@3.4.0-27.1c9fdaa9e2319b814822d6dbfd0a69e1fcc13a85":
+  version "3.4.0-27.1c9fdaa9e2319b814822d6dbfd0a69e1fcc13a85"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-3.4.0-27.1c9fdaa9e2319b814822d6dbfd0a69e1fcc13a85.tgz#5ec71566f215f6834b0f4be267cd9690e086210a"
+  integrity sha512-jyCjXhX1ZUbzA7+6Hm0iEdeY+qFfpD/RB7iSwMrMoIhkVYvnncSdCLBgbK0yqxTJR2nglevkDY2ve3QDxFciMA==
 
 "@sqltools/formatter@^1.2.2":
   version "1.2.3"
@@ -1978,12 +1978,12 @@ pretty-format@^3.8.0:
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
   integrity sha1-v77VbV6ad2ZF9LH/eqGjrE+jw4U=
 
-prisma@^2.27.0:
-  version "2.27.0"
-  resolved "https://registry.yarnpkg.com/prisma/-/prisma-2.27.0.tgz#45fdecb9c2470c7ad602e804ffed70dfa7c46ad1"
-  integrity sha512-/3H9C+IPlJmY5KArhfKHMpxKXqcZIBZ+LjM1b5FxvLCGQkq/mRC96SpHcKcLtiYgftNAX13nvlxg+cBw9Dbe8Q==
+prisma@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-3.4.0.tgz#3ac310c9bf390c366b198d4aec14f728e390752d"
+  integrity sha512-W0AFjVxPOLW5SEnf0ZwbOu4k8ElX98ioFC1E8Gb9Q/nuO2brEwxFJebXglfG+N6zphGbu2bG1I3VAu7aYzR3VA==
   dependencies:
-    "@prisma/engines" "2.27.0-43.cdba6ec525e0213cce26f8e4bb23cf556d1479bb"
+    "@prisma/engines" "3.4.0-27.1c9fdaa9e2319b814822d6dbfd0a69e1fcc13a85"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
