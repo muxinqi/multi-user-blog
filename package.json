@@ -13,7 +13,7 @@
   "dependencies": {
     "@geist-ui/react": "^2.1.5",
     "@geist-ui/react-icons": "^1.0.1",
-    "@prisma/client": "^2.27.0",
+    "@prisma/client": "^3.5.0",
     "inter-ui": "^3.19.2",
     "moment": "^2.29.1",
     "next": "^11.0.1",
